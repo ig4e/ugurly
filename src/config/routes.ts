@@ -1,4 +1,4 @@
-import { Home, Plus, Settings } from "lucide-react";
+import { Home, Plus } from "lucide-react";
 
 export const routes = [
   {

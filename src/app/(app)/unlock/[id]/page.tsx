@@ -1,11 +1,9 @@
 "use client";
-import React from "react";
-import { H2 } from "~/components/ui/typography";
-import { api } from "~/trpc/react";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { z } from "zod";
 import { Button } from "~/components/ui/button";
 import {
   Form,
@@ -17,8 +15,9 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-import { redirect, useRouter } from "next/navigation";
+import { H2 } from "~/components/ui/typography";
 import { getUrl } from "~/lib/get-url";
+import { api } from "~/trpc/react";
 
 const formSchema = z.object({
   password: z.string().min(3, { message: "Min length is 3 letters" }),

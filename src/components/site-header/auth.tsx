@@ -1,4 +1,7 @@
-import React from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { getServerAuthSession } from "~/server/auth";
+import { Button } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,11 +10,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { Button } from "../ui/button";
-import Image from "next/image";
-import { getServerAuthSession } from "~/server/auth";
-import Link from "next/link";
-import { redirect } from "next/navigation";
 
 async function Auth() {
   const session = await getServerAuthSession();

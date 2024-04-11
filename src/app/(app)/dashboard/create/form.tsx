@@ -1,19 +1,20 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Infinity } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { set, z } from "zod";
+import { toast } from "sonner";
+import { z } from "zod";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "~/components/ui/alert-dialog";
+  AdaptiveModal,
+  AdaptiveModalClose,
+  AdaptiveModalContent,
+  AdaptiveModalDescription,
+  AdaptiveModalFooter,
+  AdaptiveModalHeader,
+  AdaptiveModalTitle
+} from "~/components/adaptive-modal";
 import { Button } from "~/components/ui/button";
 import {
   Form,
@@ -25,21 +26,8 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-import { toast } from "sonner";
-import { api } from "~/trpc/react";
 import { getUrl } from "~/lib/get-url";
-import {
-  AdaptiveModal,
-  AdaptiveModalBody,
-  AdaptiveModalClose,
-  AdaptiveModalContent,
-  AdaptiveModalDescription,
-  AdaptiveModalFooter,
-  AdaptiveModalHeader,
-  AdaptiveModalTitle,
-  AdaptiveModalTrigger,
-} from "~/components/adaptive-modal";
-import { Infinity } from "lucide-react";
+import { api } from "~/trpc/react";
 const formSchema = z.object({
   slug: z
     .string()
@@ -267,7 +255,7 @@ export function UrlForm() {
                 <Button
                   type="button"
                   onClick={() => {
-                    navigator.clipboard.writeText(
+                    void navigator.clipboard.writeText(
                       getUrl(createUrl.data ?? { id: "unkown" }),
                     );
                     toast("Copied to clipboard", {
@@ -286,7 +274,7 @@ export function UrlForm() {
             variant="default"
             disabled={createUrl.isPending}
             onClick={() => {
-              form
+              void form
                 .trigger(["url", "slug", "password", "maxClicks"])
                 .then(() => {
                   Object.keys(form.formState.errors).length === 0 &&

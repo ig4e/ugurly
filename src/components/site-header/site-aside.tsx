@@ -1,11 +1,4 @@
-import { Home, Package2, Settings } from "lucide-react";
 import Link from "next/link";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "~/components/ui/tooltip";
 import { routes } from "~/config/routes";
 import { AsideItem } from "./aside-item";
 

@@ -1,29 +1,19 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "~/components/ui/alert-dialog";
-import {
   AdaptiveModal,
-  AdaptiveModalBody,
   AdaptiveModalClose,
   AdaptiveModalContent,
   AdaptiveModalDescription,
   AdaptiveModalFooter,
   AdaptiveModalHeader,
-  AdaptiveModalTitle,
-  AdaptiveModalTrigger,
+  AdaptiveModalTitle
 } from "~/components/adaptive-modal";
 import { Button } from "~/components/ui/button";
 import {
@@ -36,10 +26,8 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-import { toast } from "sonner";
-import { api } from "~/trpc/react";
 import { getUrl } from "~/lib/get-url";
-import { useRouter } from "next/navigation";
+import { api } from "~/trpc/react";
 
 const formSchema = z.object({
   slug: z
@@ -238,7 +226,7 @@ export function UrlForm({
             variant="default"
             disabled={editUrl.isPending}
             onClick={() => {
-              form
+              void form
                 .trigger(["url", "slug", "password", "maxClicks"])
                 .then(() => {
                   Object.keys(form.formState.errors).length === 0 &&

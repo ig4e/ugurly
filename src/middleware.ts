@@ -1,4 +1,4 @@
-import { Url } from "@prisma/client";
+import type { Url } from "@prisma/client";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { libsql } from "./server/db";

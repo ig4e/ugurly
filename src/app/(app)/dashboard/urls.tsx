@@ -1,24 +1,9 @@
 "use client";
-import React from "react";
-import { api } from "~/trpc/react";
+import { Clipboard, Infinity, Trash } from "lucide-react";
+import Link from "next/link";
 import { toast } from "sonner";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
-import { Progress } from "~/components/ui/progress";
-import { getUrl } from "~/lib/get-url";
-import { Clipboard, Infinity, Trash } from "lucide-react";
-import { Button } from "~/components/ui/button";
-import { Label } from "~/components/ui/label";
-import Link from "next/link";
-import {
   AdaptiveModal,
-  AdaptiveModalBody,
   AdaptiveModalClose,
   AdaptiveModalContent,
   AdaptiveModalDescription,
@@ -27,6 +12,17 @@ import {
   AdaptiveModalTitle,
   AdaptiveModalTrigger,
 } from "~/components/adaptive-modal";
+import { Button } from "~/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
+import { Label } from "~/components/ui/label";
+import { Progress } from "~/components/ui/progress";
 import { Skeleton } from "~/components/ui/skeleton";
 import {
   Tooltip,
@@ -34,6 +30,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "~/components/ui/tooltip";
+import { getUrl } from "~/lib/get-url";
+import { api } from "~/trpc/react";
 
 function Urls() {
   const { data, isLoading, isError, refetch } =
@@ -54,13 +52,13 @@ function Urls() {
       toast("Successfuly deleted", {
         description: `Url ${data.id} was deleted`,
       });
-      refetch();
+      void refetch();
     },
     onError(error) {
       toast("Failed to delete", {
         description: error.message,
       });
-      refetch();
+      void refetch();
     },
   });
 
@@ -68,7 +66,7 @@ function Urls() {
     data?.pages
       .flat()
       ?.map((page) => page.items)
-      .flat() || [];
+      .flat() ?? [];
 
   return (
     <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
@@ -83,9 +81,9 @@ function Urls() {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <button
-                      className="hover:!text-primary flex items-center gap-2 ps-0 p-1 mb-1 text-start hover:bg-background rounded"
+                      className="mb-1 flex items-center gap-2 rounded p-1 ps-0 text-start hover:bg-background hover:!text-primary"
                       onClick={() => {
-                        navigator.clipboard.writeText(getUrl(url));
+                        void navigator.clipboard.writeText(getUrl(url));
                         toast("Copied to clipboard", {
                           description: getUrl(url),
                         });
@@ -103,7 +101,7 @@ function Urls() {
 
               <CardTitle className="text-4xl">
                 {url.clicks}{" "}
-                <span className="text-muted-foreground text-sm">Clicks</span>
+                <span className="text-sm text-muted-foreground">Clicks</span>
               </CardTitle>
             </CardHeader>
             <CardContent>

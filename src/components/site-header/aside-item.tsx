@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 import { buttonVariants } from "../ui/button";
 import {
   Tooltip,
