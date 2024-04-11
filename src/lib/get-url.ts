@@ -7,6 +7,6 @@ export function getUrl({
   slug?: string | null;
   addHostname?: boolean;
 }) {
-  const url = (process.env.VERCEL_URL ?? "http://localhost:3000") + "/r/";
+  const url = (process.env.NEXT_PUBLIC_VERCEL_URL ?? "http://localhost:3000") + "/r/";
   return `${addHostname ? url : ""}${slug ? slug : id}`;
 }

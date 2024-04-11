@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: "Ugurly",
-  url: "https://ahmed-mohamed-ig4e.vercel.app",
-  ogImage: "https://ahmed-mohamed-ig4e.vercel.app/og.jpg",
+  url: "https://ugurly.vercel.app",
+  ogImage: "https://ugurly.vercel.app/og.png",
   description: "URL Shortener - Shorten Your URLs, Not Your Possiblities.",
   links: {
     github: "https://github.com/ig4e",
