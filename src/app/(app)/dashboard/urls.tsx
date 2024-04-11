@@ -72,7 +72,7 @@ function Urls() {
     <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {urls.map((url) => {
         const clsPre = ((url.clicks ?? 0) / (url.maxClicks ?? 0)) * 100;
-        const clicksPrecentage = isNaN(clsPre) ? 0 : Math.round(clsPre);
+        const clicksPrecentage = !url.maxClicks ? 0 : Math.round(clsPre);
 
         return (
           <Card key={url.id}>
