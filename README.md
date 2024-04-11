@@ -26,7 +26,7 @@
 
 ### 📋 Prerequisites
 
-- [TursoDB]([https://www.mongodb.com/try/download/community](https://turso.tech/app)) 🌿
+- [TursoDB]([https://turso.tech/app])(turso.tech/app) 🌿
 
 ### 📂 Clone the repository
 
