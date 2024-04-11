@@ -1,29 +1,78 @@
-# Create T3 App
+<h3 align="center">Ugurly</h3>
+<p align="center">Shorten Your Url not Your Possibilities (LOL)</p>
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+<p align="center">
+    <a href="#-features"><kbd>🔥 Features</kbd></a>
+    <a href="#-getting-started"><kbd>🚀 Getting Started</kbd></a>
+</p>
 
-## What's next? How do I make an app with this?
+# ⚡ Introduction
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+**ugurly.vercel.app** is a free, open-source service for shortening URLs. It offers URL statistics, a free API, and customization options. You can create custom `slugs`, add `password protection`, and manage `link lifespans`.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+# 🔥 Features
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+- `Custom Slugs` - Create custom slugs for your URLs 🎯
+- `Emoji Slugs` - Use emojis as slugs for your URLs 😃
+- `Password Protection` - Protect your URLs with a password 🔒
+- `Link Max Clicks` - Set a maximum number of clicks for your URLs 📈
+- `URL Statistics` - View detailed statistics for your URLs 📊
+- `Open Source` - ugurly.vercel.app is open-sourced and free to use 📖
+- `No Ads` - No ads, no tracking, no nonsense 🚫
+- `Absolutely Free` - No hidden costs, no premium plans, no limitations 💸
+- `Self Hosting` - You can host spoo.me on your own server 🏠
 
-## Learn More
+# 🚀 Getting Started
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+### 📋 Prerequisites
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+- [TursoDB]([https://www.mongodb.com/try/download/community](https://turso.tech/app)) 🌿
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+### 📂 Clone the repository
 
-## How do I deploy this?
+### 📦 Install dependencies
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+```bash
+bun install
+```
+
+### Rename .env.example to .env
+
+```bash
+mv .env.example .env
+```
+
+### ➕ Adding environment variables to .env file
+
+```bash
+TURSO_DATABASE_URL="libsql://db-name-user.turso.io"
+TURSO_AUTH_TOKEN="longtoken"
+
+
+# Next Auth
+# You can generate a new secret on the command line with:
+# openssl rand -base64 32
+# https://next-auth.js.org/configuration/options#secret
+# NEXTAUTH_SECRET=""
+NEXTAUTH_URL="http://localhost:3000"
+
+# Next Auth Discord Provider
+DISCORD_CLIENT_ID=""
+DISCORD_CLIENT_SECRET=""
+```
+
+### 🚀 Starting the server
+
+```bash
+bun dev
+```
+
+### 🌐 Access the server
+
+Open your browser and go to `http://localhost:3000` to access the **ugurly** URL shortener.
+
+---
+
+<h6 align="center">
+© ugurly.vercel.app . 2024
+All Rights Reserved</h6>
