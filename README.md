@@ -26,7 +26,7 @@
 
 ### 📋 Prerequisites
 
-- [TursoDB] ([https://turso.tech/app])(turso.tech/app) 🌿
+- TursoDB https://turso.tech/app 🌿
 
 ### 📂 Clone the repository
 
