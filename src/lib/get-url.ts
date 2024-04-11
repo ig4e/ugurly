@@ -7,6 +7,6 @@ export function getUrl({
   slug?: string | null;
   addHostname?: boolean;
 }) {
-  const url = (process.env.NEXT_PUBLIC_VERCEL_URL ?? "http://localhost:3000") + "/r/";
+  const url = (process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://ugurly.vercel.app") + "/r/";
   return `${addHostname ? url : ""}${slug ? slug : id}`;
 }
