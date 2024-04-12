@@ -1,5 +1,4 @@
 import { redirect } from "next/navigation";
-import React from "react";
 import { getServerAuthSession } from "~/server/auth";
 
 async function ApiPage() {

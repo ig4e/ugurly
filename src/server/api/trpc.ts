@@ -8,13 +8,12 @@
  */
 
 import { initTRPC, TRPCError } from "@trpc/server";
-import { type OpenApiMeta } from "trpc-openapi";
 import superjson from "superjson";
+import { type OpenApiMeta } from "trpc-openapi";
 import { ZodError } from "zod";
 
 import { getServerAuthSession } from "~/server/auth";
 import { db } from "~/server/db";
-import { Lexend_Peta } from "next/font/google";
 
 /**
  * 1. CONTEXT

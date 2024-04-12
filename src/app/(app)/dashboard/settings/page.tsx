@@ -1,10 +1,9 @@
-import { redirect } from "next/navigation";
-import React from "react";
-import { getServerAuthSession } from "~/server/auth";
-import { H2, H3, H4 } from "~/components/ui/typography";
-import ApiKeys from "./api-keys";
-import { Button } from "~/components/ui/button";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { Button } from "~/components/ui/button";
+import { H2, H3 } from "~/components/ui/typography";
+import { getServerAuthSession } from "~/server/auth";
+import ApiKeys from "./api-keys";
 
 async function Home() {
   const session = await getServerAuthSession();
