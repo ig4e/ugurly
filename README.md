@@ -20,7 +20,7 @@
 - `Open Source` - ugurly.vercel.app is open-sourced and free to use 📖
 - `No Ads` - No ads, no tracking, no nonsense 🚫
 - `Absolutely Free` - No hidden costs, no premium plans, no limitations 💸
-- `Self Hosting` - You can host spoo.me on your own server 🏠
+- `Self Hosting` - You can host ugurly.vercel.app on your own server 🏠
 
 # 🚀 Getting Started
 
