@@ -18,7 +18,7 @@ export const routes = [
   {
     icon: Book,
     title: "Docs",
-    url: "https://ahmed-mohamed-ig4es-projects.vercel.app/en-US/blog/posts/4/ugurly",
+    url: "https://ahmed-mohamed.vercel.app/en-US/blog/posts/4/ugurly",
     bottom: true,
     external: true,
   },
