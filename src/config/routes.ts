@@ -6,12 +6,14 @@ export const routes = [
     title: "Home",
     url: "/dashboard",
     bottom: false,
+    external: false,
   },
   {
     icon: Plus,
     title: "Create",
     url: "/dashboard/create",
     bottom: false,
+    external: false,
   },
   {
     icon: Book,
@@ -25,5 +27,6 @@ export const routes = [
     title: "Settings",
     url: "/dashboard/settings",
     bottom: true,
+    external: false,
   },
 ] as const;
