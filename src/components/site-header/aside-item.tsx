@@ -18,7 +18,7 @@ export type RouteProps = {
   readonly external: boolean;
 };
 
-export function AsideItem({ title, url, icon: Icon }: RouteProps) {
+export function AsideItem({ title, url, icon: Icon, external }: RouteProps) {
   const pathname = usePathname();
   const isActive = pathname === url;
 
