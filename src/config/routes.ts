@@ -1,4 +1,4 @@
-import { Home, Plus } from "lucide-react";
+import { Book, Cog, Home, Plus } from "lucide-react";
 
 export const routes = [
   {
@@ -12,5 +12,18 @@ export const routes = [
     title: "Create",
     url: "/dashboard/create",
     bottom: false,
+  },
+  {
+    icon: Book,
+    title: "Docs",
+    url: "https://ahmed-mohamed-ig4e.vercel.app/en-US/blog/posts/3/test",
+    bottom: true,
+    external: true,
+  },
+  {
+    icon: Cog,
+    title: "Settings",
+    url: "/dashboard/settings",
+    bottom: true,
   },
 ] as const;

@@ -15,6 +15,7 @@ export type RouteProps = {
   readonly title: string;
   readonly url: string;
   readonly bottom: boolean;
+  readonly external: boolean;
 };
 
 export function AsideItem({ title, url, icon: Icon }: RouteProps) {
@@ -32,6 +33,8 @@ export function AsideItem({ title, url, icon: Icon }: RouteProps) {
               variant: isActive ? "secondary" : "ghost",
               className: "h-8 w-8",
             })}
+            target={external ? "_blank" : undefined}
+            rel={external ? "noreferrer" : undefined}
           >
             {Icon}
             <span className="sr-only">{title}</span>

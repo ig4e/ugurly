@@ -1,0 +1,9 @@
+-- CreateTable
+CREATE TABLE "Key" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "secret" TEXT NOT NULL,
+    "createdById" TEXT NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    CONSTRAINT "Key_createdById_fkey" FOREIGN KEY ("createdById") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);

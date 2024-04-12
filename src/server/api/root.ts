@@ -1,4 +1,5 @@
 import { urlRouter } from "~/server/api/routers/url";
+import { keyRouter } from "~/server/api/routers/key";
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 
 /**
@@ -8,6 +9,7 @@ import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
  */
 export const appRouter = createTRPCRouter({
   url: urlRouter,
+  key: keyRouter,
 });
 
 // export type definition of API

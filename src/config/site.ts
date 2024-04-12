@@ -4,7 +4,7 @@ export const siteConfig = {
   ogImage: "https://ugurly.vercel.app/og.png",
   description: "URL Shortener - Shorten Your URLs, Not Your Possiblities.",
   links: {
-    github: "https://github.com/ig4e",
+    github: "https://github.com/ig4e/ugurly",
   },
 };
 

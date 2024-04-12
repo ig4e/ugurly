@@ -154,7 +154,7 @@ export const urlRouter = createTRPCRouter({
       z.object({
         limit: z.number().min(1).max(100).nullish(),
         cursor: z.string().nullish(),
-        sortBy: z.enum(["createdAt_desc", "createdAt_asc"]),
+        sortBy: z.enum(["desc", "asc"]).default("desc"),
       }),
     )
     .query(async ({ ctx, input }) => {
@@ -166,9 +166,7 @@ export const urlRouter = createTRPCRouter({
           createdById: ctx.session.user.id,
         },
         cursor: cursor ? { id: cursor } : undefined,
-        orderBy: {
-          id: "asc",
-        },
+        orderBy: { createdAt: input.sortBy },
       });
 
       let nextCursor: typeof cursor | undefined = undefined;

@@ -13,7 +13,7 @@ import {
 
 function Breadcrumbs() {
   const pathname = usePathname();
-  const segments = pathname?.split("/").filter(Boolean);
+  const segments = pathname?.split("/").filter(Boolean) ?? [];
 
   return (
     <Breadcrumb className="hidden md:flex">

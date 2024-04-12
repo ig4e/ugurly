@@ -8,11 +8,13 @@
  */
 
 import { initTRPC, TRPCError } from "@trpc/server";
+import { type OpenApiMeta } from "trpc-openapi";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
 import { getServerAuthSession } from "~/server/auth";
 import { db } from "~/server/db";
+import { Lexend_Peta } from "next/font/google";
 
 /**
  * 1. CONTEXT
@@ -27,7 +29,28 @@ import { db } from "~/server/db";
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-  const session = await getServerAuthSession();
+  let session = await getServerAuthSession();
+
+  if (!session) {
+    const apiKey = opts.headers.get("authorization")?.split(" ")[1];
+    if (apiKey) {
+      const apiKeyWUser = await db.key.findUnique({
+        where: {
+          secret: apiKey,
+        },
+        include: {
+          createdBy: true,
+        },
+      });
+
+      if (apiKeyWUser) {
+        session = {
+          user: apiKeyWUser.createdBy,
+          expires: "99999999999999999999999999",
+        };
+      }
+    }
+  }
 
   return {
     db,
@@ -43,19 +66,22 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
  * ZodErrors so that you get typesafety on the frontend if your procedure fails due to validation
  * errors on the backend.
  */
-const t = initTRPC.context<typeof createTRPCContext>().create({
-  transformer: superjson,
-  errorFormatter({ shape, error }) {
-    return {
-      ...shape,
-      data: {
-        ...shape.data,
-        zodError:
-          error.cause instanceof ZodError ? error.cause.flatten() : null,
-      },
-    };
-  },
-});
+const t = initTRPC
+  .meta<OpenApiMeta>()
+  .context<typeof createTRPCContext>()
+  .create({
+    transformer: superjson,
+    errorFormatter({ shape, error }) {
+      return {
+        ...shape,
+        data: {
+          ...shape.data,
+          zodError:
+            error.cause instanceof ZodError ? error.cause.flatten() : null,
+        },
+      };
+    },
+  });
 
 /**
  * Create a server-side caller.
