@@ -7,6 +7,7 @@ import {
 } from "~/server/api/trpc";
 import { MAX, MIN } from "~/server/config";
 import { TRPCError } from "@trpc/server";
+import { getUrl } from "~/lib/get-url";
 
 const urlQueryType = z.enum(["slug", "id"]);
 
@@ -30,7 +31,7 @@ export const urlRouter = createTRPCRouter({
           .then((salt) => bcrypt.hash(input.password!, salt))
       : undefined;
 
-    return ctx.db.url.create({
+    const url = await ctx.db.url.create({
       data: {
         slug: input.slug,
         url: input.url,
@@ -41,6 +42,8 @@ export const urlRouter = createTRPCRouter({
           : undefined,
       },
     });
+
+    return { ...url, shortUrl: getUrl(url) };
   }),
 
   edit: protectedProcedure
