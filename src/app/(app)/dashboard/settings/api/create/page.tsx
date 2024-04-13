@@ -1,8 +1,7 @@
-import React from "react";
-import { H2 } from "~/components/ui/typography";
-import { UrlForm } from "./form";
-import { getServerAuthSession } from "~/server/auth";
 import { redirect } from "next/navigation";
+import { H2 } from "~/components/ui/typography";
+import { getServerAuthSession } from "~/server/auth";
+import { UrlForm } from "./form";
 
 async function Create() {
   const session = await getServerAuthSession();

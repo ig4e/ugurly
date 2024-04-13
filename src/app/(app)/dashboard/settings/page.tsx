@@ -4,6 +4,7 @@ import { Button } from "~/components/ui/button";
 import { H2, H3 } from "~/components/ui/typography";
 import { getServerAuthSession } from "~/server/auth";
 import ApiKeys from "./api-keys";
+import { api } from "~/trpc/server";
 
 async function Home() {
   const session = await getServerAuthSession();
@@ -11,6 +12,8 @@ async function Home() {
   if (!session || !session.user) {
     redirect("/");
   }
+
+  const apiKeys = await api.key.getMany({});
 
   return (
     <div className="space-y-6">
@@ -21,7 +24,7 @@ async function Home() {
           <Button size={"sm"}>Create</Button>
         </Link>
       </div>
-      <ApiKeys />
+      <ApiKeys initialData={apiKeys} />
     </div>
   );
 }

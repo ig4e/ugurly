@@ -27,14 +27,25 @@ import {
   TooltipTrigger,
 } from "~/components/ui/tooltip";
 import { api } from "~/trpc/react";
+import type { RouterOutput } from "~/trpc/utils";
 
-function ApiKeys() {
+function ApiKeys({
+  initialData,
+}: {
+  initialData: RouterOutput["key"]["getMany"];
+}) {
   const { data, isLoading, isError, refetch, hasNextPage, fetchNextPage } =
     api.key.getMany.useInfiniteQuery(
       {
         sortBy: "desc",
       },
-      { getNextPageParam: (lastPage) => lastPage.nextCursor },
+      {
+        getNextPageParam: (lastPage) => lastPage.nextCursor,
+        initialData: {
+          pages: [initialData],
+          pageParams: [],
+        },
+      },
     );
 
   const deleteKey = api.key.delete.useMutation({

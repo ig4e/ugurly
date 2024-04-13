@@ -1,3 +1,5 @@
+import { env } from "~/env";
+
 export function getUrl({
   id,
   slug,
@@ -7,6 +9,9 @@ export function getUrl({
   slug?: string | null;
   addHostname?: boolean;
 }) {
-  const url = (process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://ugurly.vercel.app") + "/r/";
+  const url =
+    (process.env.NODE_ENV === "development"
+      ? "http://localhost:3000"
+      : env.NEXT_PUBLIC_REDIRECT_URL) + "/r/";
   return `${addHostname ? url : ""}${slug ? slug : id}`;
 }

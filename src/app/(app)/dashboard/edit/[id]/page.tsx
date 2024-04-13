@@ -1,9 +1,11 @@
 import { redirect } from "next/navigation";
-import React from "react";
 import { H2 } from "~/components/ui/typography";
 import { getServerAuthSession } from "~/server/auth";
-import { UrlForm } from "./form";
 import { api } from "~/trpc/server";
+import { UrlForm } from "./form";
+
+export const fetchCache = "force-no-store";
+export const revalidate = 0;
 
 async function EditUrl({ params }: { params: { id: string } }) {
   const session = await getServerAuthSession();

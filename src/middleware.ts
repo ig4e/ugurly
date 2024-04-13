@@ -1,8 +1,8 @@
 import type { Url } from "@prisma/client";
+import bcrypt from "bcrypt-edge";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { libsql } from "./server/db";
-import bcrypt from "bcrypt-edge";
 
 export async function middleware(request: NextRequest) {
   const password = request.nextUrl.searchParams.get("password");
@@ -19,8 +19,6 @@ export async function middleware(request: NextRequest) {
   });
 
   const url = result.rows[0] as unknown as Url | undefined;
-
-  console.log(url);
 
   if (url) {
     if (url.maxClicks) {
@@ -58,3 +56,5 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: "/r/:path*",
 };
+
+export const preferredRegion = "cdg1";

@@ -1,10 +1,10 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
-import React from "react";
+import { Button } from "~/components/ui/button";
+import { H2 } from "~/components/ui/typography";
 import { getServerAuthSession } from "~/server/auth";
 import Urls from "./urls";
-import { H2 } from "~/components/ui/typography";
-import Link from "next/link";
-import { Button } from "~/components/ui/button";
+import { api } from "~/trpc/server";
 
 async function Home() {
   const session = await getServerAuthSession();
@@ -12,6 +12,8 @@ async function Home() {
   if (!session || !session.user) {
     redirect("/");
   }
+
+  const urls = await api.url.getUrls({});
 
   return (
     <div className="space-y-6">
@@ -21,7 +23,7 @@ async function Home() {
           <Button size={"sm"}>Create</Button>
         </Link>
       </div>
-      <Urls></Urls>
+      <Urls initialData={urls} />
     </div>
   );
 }

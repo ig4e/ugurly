@@ -1,20 +1,17 @@
-import { PrismaClient } from "@prisma/client";
-import { PrismaLibSQL } from "@prisma/adapter-libsql";
 import { createClient } from "@libsql/client/web";
-
+import { PrismaLibSQL } from "@prisma/adapter-libsql";
+import { PrismaClient } from "@prisma/client";
 import { env } from "~/env";
 
 const createLibsqlClient = () => {
-  const libsql = createClient({
+  return createClient({
     url: `${process.env.TURSO_DATABASE_URL}`,
     authToken: `${process.env.TURSO_AUTH_TOKEN}`,
   });
-
-  return libsql;
 };
 
 const createPrismaClient = () => {
-  const libsql = createLibsqlClient();
+  const libsql = globalForPrisma.libsql ?? createLibsqlClient();
   globalForPrisma.libsql = libsql;
 
   const adapter = new PrismaLibSQL(libsql);

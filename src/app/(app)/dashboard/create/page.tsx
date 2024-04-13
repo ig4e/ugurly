@@ -1,4 +1,3 @@
-import React from "react";
 import { H2 } from "~/components/ui/typography";
 import { UrlForm } from "./form";
 

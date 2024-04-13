@@ -1,13 +1,14 @@
-import { z } from "zod";
+import { TRPCError } from "@trpc/server";
 import bcrypt from "bcrypt";
+import ShortUniqueId from "short-unique-id";
+import { z } from "zod";
+import { getUrl } from "~/lib/get-url";
 import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
 import { MAX, MIN } from "~/server/config";
-import { TRPCError } from "@trpc/server";
-import { getUrl } from "~/lib/get-url";
 
 const urlQueryType = z.enum(["slug", "id"]);
 
@@ -24,6 +25,7 @@ const urlFields = z.object({
 
 export const urlRouter = createTRPCRouter({
   create: publicProcedure.input(urlFields).mutation(async ({ ctx, input }) => {
+    const { randomUUID } = new ShortUniqueId({ length: 10 });
     const isAuthed = !!ctx.session?.user;
     const passwordHash = input.password
       ? await bcrypt
@@ -33,6 +35,7 @@ export const urlRouter = createTRPCRouter({
 
     const url = await ctx.db.url.create({
       data: {
+        id: randomUUID(),
         slug: input.slug,
         url: input.url,
         password: passwordHash,
@@ -47,7 +50,18 @@ export const urlRouter = createTRPCRouter({
   }),
 
   edit: protectedProcedure
-    .input(urlFields.extend({ id: z.string().min(MIN.url.id) }))
+    .input(
+      urlFields.extend({
+        id: z.string().min(MIN.url.id),
+        password: z
+          .string()
+          .min(MIN.url.passwordLength)
+          .max(MAX.url.passwordLength)
+          .nullable()
+          .optional(),
+        maxClicks: z.number().int().nullable().optional(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const url = await ctx.db.url.findUnique({
         where: {
@@ -76,7 +90,7 @@ export const urlRouter = createTRPCRouter({
                   .genSalt()
                   .then((salt) => bcrypt.hash(input.password!, salt))
               : url.password
-            : undefined,
+            : { set: null },
           maxClicks: input.maxClicks,
         },
       });

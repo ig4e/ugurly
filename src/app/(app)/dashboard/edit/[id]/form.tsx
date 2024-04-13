@@ -13,7 +13,7 @@ import {
   AdaptiveModalDescription,
   AdaptiveModalFooter,
   AdaptiveModalHeader,
-  AdaptiveModalTitle
+  AdaptiveModalTitle,
 } from "~/components/adaptive-modal";
 import { Button } from "~/components/ui/button";
 import {
@@ -40,12 +40,14 @@ const formSchema = z.object({
   password: z
     .string()
     .min(3, { message: "Password must be 3 letters or more" })
+    .nullable()
     .optional(),
   maxClicks: z
     .number()
     .int({
       message: "Max clicks must be a whole number.",
     })
+    .nullable()
     .optional(),
 });
 
@@ -148,7 +150,14 @@ export function UrlForm({
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="ahmed12345" {...field} />
+                  <Input
+                    placeholder="ahmed12345"
+                    {...field}
+                    value={field.value ?? ""}
+                    onChange={(e) =>
+                      field.onChange(!!e.target.value ? e.target.value : null)
+                    }
+                  />
                 </FormControl>
                 <FormDescription>
                   For security reasons you cannot view the current password BUT
@@ -171,10 +180,11 @@ export function UrlForm({
                     placeholder="20"
                     type="number"
                     {...field}
+                    value={field.value ?? ""}
                     onChange={(value) =>
-                      field.onChange(
+                      void field.onChange(
                         isNaN(value.target.valueAsNumber)
-                          ? undefined
+                          ? null
                           : value.target.valueAsNumber,
                       )
                     }

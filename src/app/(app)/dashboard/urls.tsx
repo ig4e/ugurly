@@ -32,14 +32,22 @@ import {
 } from "~/components/ui/tooltip";
 import { getUrl } from "~/lib/get-url";
 import { api } from "~/trpc/react";
+import type { RouterOutput } from "~/trpc/utils";
 
-function Urls() {
+function Urls({
+  initialData,
+}: {
+  initialData: RouterOutput["url"]["getUrls"];
+}) {
   const { data, isLoading, isError, refetch, hasNextPage, fetchNextPage } =
     api.url.getUrls.useInfiniteQuery(
       {
         sortBy: "desc",
       },
-      { getNextPageParam: (lastPage) => lastPage.nextCursor },
+      {
+        getNextPageParam: (lastPage) => lastPage.nextCursor,
+        initialData: { pageParams: [], pages: [initialData] },
+      },
     );
 
   const deleteUrl = api.url.delete.useMutation({
@@ -175,7 +183,7 @@ function Urls() {
         })}
 
         {isLoading &&
-          Array.from({ length: 6 })
+          Array.from({ length: 5 })
             .fill("")
             .map((_value, index) => {
               return (

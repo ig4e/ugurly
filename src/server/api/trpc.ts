@@ -9,7 +9,6 @@
 
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
-import { type OpenApiMeta } from "trpc-openapi";
 import { ZodError } from "zod";
 
 import { getServerAuthSession } from "~/server/auth";
@@ -65,22 +64,19 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
  * ZodErrors so that you get typesafety on the frontend if your procedure fails due to validation
  * errors on the backend.
  */
-const t = initTRPC
-  .meta<OpenApiMeta>()
-  .context<typeof createTRPCContext>()
-  .create({
-    transformer: superjson,
-    errorFormatter({ shape, error }) {
-      return {
-        ...shape,
-        data: {
-          ...shape.data,
-          zodError:
-            error.cause instanceof ZodError ? error.cause.flatten() : null,
-        },
-      };
-    },
-  });
+const t = initTRPC.context<typeof createTRPCContext>().create({
+  transformer: superjson,
+  errorFormatter({ shape, error }) {
+    return {
+      ...shape,
+      data: {
+        ...shape.data,
+        zodError:
+          error.cause instanceof ZodError ? error.cause.flatten() : null,
+      },
+    };
+  },
+});
 
 /**
  * Create a server-side caller.
