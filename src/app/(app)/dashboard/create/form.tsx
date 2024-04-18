@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Infinity } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -13,7 +14,7 @@ import {
   AdaptiveModalDescription,
   AdaptiveModalFooter,
   AdaptiveModalHeader,
-  AdaptiveModalTitle
+  AdaptiveModalTitle,
 } from "~/components/adaptive-modal";
 import { Button } from "~/components/ui/button";
 import {
@@ -51,6 +52,7 @@ const formSchema = z.object({
 export function UrlForm() {
   const [isOpen, setIsOpen] = useState(false);
   const [isCopyModalOpen, setIsCopyModalOpen] = useState(false);
+  const router = useRouter();
 
   const createUrl = api.url.create.useMutation({
     onSuccess(data) {
@@ -215,7 +217,14 @@ export function UrlForm() {
 
           <AdaptiveModal
             open={isCopyModalOpen}
-            onOpenChange={setIsCopyModalOpen}
+            onOpenChange={(open) => {
+              setIsCopyModalOpen(open);
+              if (!open) {
+                void form.reset();
+                if (createUrl.data)
+                  router.push(`/dashboard/preview/${createUrl.data?.id}`);
+              }
+            }}
           >
             <AdaptiveModalContent>
               <AdaptiveModalHeader>
@@ -248,8 +257,13 @@ export function UrlForm() {
                     type="button"
                     variant={"secondary"}
                     className="w-full"
+                    onClick={() => {
+                      setIsCopyModalOpen(false);
+                      if (createUrl.data)
+                        router.push(`/dashboard/preview/${createUrl.data?.id}`);
+                    }}
                   >
-                    Close
+                    Stats
                   </Button>
                 </AdaptiveModalClose>
                 <Button

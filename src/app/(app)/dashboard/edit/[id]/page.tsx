@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { H2 } from "~/components/ui/typography";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
@@ -14,7 +14,10 @@ async function EditUrl({ params }: { params: { id: string } }) {
     redirect("/");
   }
 
-  const url = await api.url.get({ id: params.id });
+  const url = await api.url.get({ id: params.id }).catch((err) => {
+    console.error(err);
+    notFound();
+  });
 
   return (
     <div className="space-y-6">

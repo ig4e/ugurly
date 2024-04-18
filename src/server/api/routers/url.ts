@@ -166,6 +166,24 @@ export const urlRouter = createTRPCRouter({
       return url;
     }),
 
+  getPreview: publicProcedure
+    .input(
+      z.object({
+        id: z.string().min(MIN.url.id),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const url = await ctx.db.url.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
+
+      if (!url) throw new TRPCError({ code: "NOT_FOUND" });
+
+      return url;
+    }),
+
   getUrls: protectedProcedure
     .input(
       z.object({

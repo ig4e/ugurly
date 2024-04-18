@@ -42,7 +42,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`font-sans antialiased ${inter.variable} flex min-h-screen w-full flex-col bg-muted/40`}
+        className={`font-sans antialiased ${inter.variable} relative flex min-h-screen w-full flex-col bg-muted/40`}
       >
         <ThemeProvider
           attribute="class"
