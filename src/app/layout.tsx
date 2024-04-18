@@ -84,7 +84,7 @@ export default function RootLayout({
               </DropdownMenu>
             </div>
           </div>
-          <Toaster />
+          <Toaster position="top-center" closeButton />
         </ThemeProvider>
       </body>
     </html>

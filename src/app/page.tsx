@@ -11,7 +11,7 @@ export default async function Home() {
   const session = await getServerAuthSession();
 
   return (
-    <main className="container flex h-full flex-col items-center pb-32">
+    <main className="mx-2 flex h-full flex-col items-center pb-16 md:pb-32 lg:container">
       <div>
         <div className="absolute inset-0 -z-20 h-full bg-background"></div>
         <div className="absolute inset-x-0 top-0 -z-[10] min-h-[40vh] rounded-b-full bg-gradient-to-b from-rose-500 to-red-100 opacity-80 blur-3xl dark:from-rose-900 md:min-h-[60vh]" />
@@ -25,7 +25,7 @@ export default async function Home() {
         />
       </div>
 
-      <div className="grid w-full grid-cols-2 justify-between gap-8 pt-16">
+      <div className="grid w-full grid-cols-1 justify-between gap-8 pt-10 md:pt-16 lg:grid-cols-2">
         <section className="flex flex-col justify-between text-start">
           <div>
             <div className="space-y-4">
@@ -40,7 +40,7 @@ export default async function Home() {
             </P>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="mt-6 flex items-center gap-4">
             <Link href={"/dashboard/create"}>
               <Button>Get started</Button>
             </Link>

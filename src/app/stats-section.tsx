@@ -28,9 +28,11 @@ async function StatsSection() {
   ];
 
   return (
-    <div className="grid w-full grid-cols-2 justify-between gap-8 pt-32">
+    <div className="grid w-full grid-cols-1 justify-between gap-8 pt-10 md:pt-32 lg:grid-cols-2">
       <div>
-        <H2>Don’t just take our word for it</H2>
+        <H2 className="text-2xl md:text-3xl">
+          Don’t just take our word for it
+        </H2>
         <P>You kinda have to take it, Rated 10/10 by myself and my mom.</P>
       </div>
 
@@ -38,7 +40,7 @@ async function StatsSection() {
         {statsTemplate.map((stat) => (
           <div
             key={stat.title}
-            className="rounded-md border bg-accent/25 p-6 text-center grid place-items-center"
+            className="grid place-items-center rounded-md border bg-accent/25 p-6 text-center"
           >
             <div className="max-w-52">
               <H3>{stat.value}</H3>
