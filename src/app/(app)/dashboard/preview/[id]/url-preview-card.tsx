@@ -1,6 +1,6 @@
 "use client";
 
-import { Url } from "@prisma/client";
+import { type Url } from "@prisma/client";
 import { Clipboard, Infinity } from "lucide-react";
 import { toast } from "sonner";
 import {
