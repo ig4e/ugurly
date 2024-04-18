@@ -21,7 +21,7 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { DesktopIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
-import { useMediaQuery } from "@uidotdev/usehooks";
+import { useMediaQuery } from "usehooks-ts";
 
 const modes = ["light", "dark", "system"] as const;
 
