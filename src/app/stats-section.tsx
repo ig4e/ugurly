@@ -10,7 +10,7 @@ async function StatsSection() {
 
   const statsTemplate = [
     {
-      title: "Clicks tracked each month",
+      title: "Total Clicks tracked and counting",
       value: formatter.format(stats.urls.totalClicks),
     },
     {
