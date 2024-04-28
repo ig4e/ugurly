@@ -1,0 +1,3177 @@
+// 20240428212129
+// https://dash.readme.com/api/v1/api-registry/34i64rh1qlu88w9j6
+
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Pay By Link",
+    "version": "2.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.merchant.geidea.net/payment-intent"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": [
+        
+      ]
+    }
+  ],
+  "paths": {
+    "/api/v1/direct/eInvoice": {
+      "post": {
+        "summary": "Create Payment Intent",
+        "description": "API to create a Payment Intent",
+        "operationId": "create-payment-intent",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "amount",
+                  "currency",
+                  "customer",
+                  "eInvoiceDetails"
+                ],
+                "properties": {
+                  "amount": {
+                    "type": "number",
+                    "description": "Amount for which payment link is created. Amount must be greater than 0.01. Must be equal to [eInvoiceItems.price * eInvoiceItems.quantity]",
+                    "default": 20,
+                    "format": "double"
+                  },
+                  "currency": {
+                    "type": "string",
+                    "description": "Currency for which payment link is created. Currency must be 3 characters in length. Acceptable currencies are: SAR, AED",
+                    "default": "SAR",
+                    "enum": [
+                      "SAR",
+                      "EGP",
+                      "AED",
+                      "QAR",
+                      "OMR",
+                      "BHD",
+                      "KWD",
+                      "USD",
+                      "GBP",
+                      "EUR"
+                    ]
+                  },
+                  "customer": {
+                    "type": "object",
+                    "description": "Customer Object",
+                    "required": [
+                      "name",
+                      "email",
+                      "phoneCountryCode",
+                      "phoneNumber"
+                    ],
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Customer Name",
+                        "default": "Kiran"
+                      },
+                      "email": {
+                        "type": "string",
+                        "description": "Email of customer. One of email or phoneNumber must be present.",
+                        "default": "testmail@geidea.com"
+                      },
+                      "phoneCountryCode": {
+                        "type": "string",
+                        "description": "Country code of customer's phone number eg: \"+971\". If phoneNumber is passed, phoneCountryCode must be passed.",
+                        "default": "+20"
+                      },
+                      "phoneNumber": {
+                        "type": "string",
+                        "description": "Customer's phone number  eg: \"511111111\". If phoneCountryCode is passed, phoneNumber must be passed.  One of email or phoneNumber must be present.",
+                        "default": "8003030083"
+                      }
+                    }
+                  },
+                  "eInvoiceDetails": {
+                    "type": "object",
+                    "description": "e-Invoice details object",
+                    "required": [
+                      "subtotal",
+                      "grandTotal",
+                      "eInvoiceItems"
+                    ],
+                    "properties": {
+                      "eInvoiceItems": {
+                        "type": "array",
+                        "description": "List of e-Invoice items",
+                        "items": {
+                          "properties": {
+                            "eInvoiceItemId": {
+                              "type": "string",
+                              "description": "e-Invoice item ID",
+                              "default": "17e95202-d151-43ff-d6af-08db4614f0bb"
+                            },
+                            "description": {
+                              "type": "string",
+                              "description": "Item description. If not set in request, it is set to null automatically and the value is returned in response.",
+                              "default": "Subscription for TFM tech"
+                            },
+                            "price": {
+                              "type": "number",
+                              "description": "Item Price",
+                              "default": 10,
+                              "format": "double"
+                            },
+                            "quantity": {
+                              "type": "integer",
+                              "description": "Quantity of item",
+                              "default": 2,
+                              "format": "int32"
+                            },
+                            "itemDiscountType": {
+                              "type": "string",
+                              "description": "Type of discount applied on item",
+                              "default": "Amount",
+                              "enum": [
+                                "Amount",
+                                "Percentage"
+                              ]
+                            },
+                            "taxType": {
+                              "type": "string",
+                              "description": "Type of tax levied on item",
+                              "default": "Amount",
+                              "enum": [
+                                "Amount",
+                                "Percentage"
+                              ]
+                            },
+                            "total": {
+                              "type": "number",
+                              "description": "Total price including tax levied. Must be equal to [eInvoiceItems.price * eInvoiceItems.quantity]",
+                              "default": 20,
+                              "format": "double"
+                            },
+                            "priceWithDiscount": {
+                              "type": "number",
+                              "description": "Item price after discount is applied. If not set in request, it is set to value of eInvoiceItems.price automatically and the value is returned in response",
+                              "format": "double"
+                            },
+                            "priceTax": {
+                              "type": "number",
+                              "description": "Tax on Item Price. If not set in request, it is set to zero automatically and the value is returned in response.",
+                              "format": "double"
+                            },
+                            "priceTotal": {
+                              "type": "number",
+                              "description": "Total Price inclusive of Tax. If not set in request, it is set to value of eInvoiceItems.price automatically and the value is returned in response.",
+                              "format": "double"
+                            },
+                            "sku": {
+                              "type": "string",
+                              "description": "Item SKU. If not set in request, it is set to null automatically and the value is returned in response."
+                            },
+                            "itemDiscount": {
+                              "type": "number",
+                              "description": "Discount applied on item. If not set in request, it is set to null automatically and the value is returned in response.",
+                              "format": "double"
+                            },
+                            "tax": {
+                              "type": "number",
+                              "description": "Tax on item. If not set in request, it is set to null automatically and the value is returned in response.",
+                              "format": "double"
+                            },
+                            "totalWithoutTax": {
+                              "type": "number",
+                              "description": "Total price of item without tax. If not set in request, it is set to value of amount automatically and the value is returned in response.",
+                              "format": "double"
+                            },
+                            "totalTax": {
+                              "type": "number",
+                              "description": "Tax for the item. If not set in request, it is set to zero automatically and the value is returned in response.",
+                              "format": "double"
+                            }
+                          },
+                          "required": [
+                            "price",
+                            "quantity",
+                            "total"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "subtotal": {
+                        "type": "number",
+                        "description": "Subtotal inclusive of tax. Must be equal to [eInvoiceItems.price * eInvoiceItems.quantity]",
+                        "default": 20,
+                        "format": "double"
+                      },
+                      "grandTotal": {
+                        "type": "number",
+                        "description": "Grand Total. Must be equal to [eInvoiceItems.price * eInvoiceItems.quantity]. Must be same as amount.",
+                        "default": 20,
+                        "format": "double"
+                      },
+                      "extraChargesType": {
+                        "type": "string",
+                        "description": "Type of extra charges levied",
+                        "default": "Amount",
+                        "enum": [
+                          "Amount",
+                          "Percentage"
+                        ]
+                      },
+                      "invoiceDiscountType": {
+                        "type": "string",
+                        "description": "Type of discount applied on invoice",
+                        "default": "Amount",
+                        "enum": [
+                          "Amount",
+                          "Percentage"
+                        ]
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "Type of eInvoice. If not set in request, it is set to \"Detailed\" automatically and the value is returned in response.",
+                        "enum": [
+                          "Detailed",
+                          "Quick"
+                        ]
+                      },
+                      "collectCustomersBillingShippingAddress": {
+                        "type": "boolean",
+                        "description": "Flag indicating to capture Customer's billing and shipping addresses. If not set in request, it is set to false automatically and the value is returned in response"
+                      },
+                      "preAuthorizeAmount": {
+                        "type": "boolean",
+                        "description": "Flag indicating whether to preauthorize the amount. If not set in request, it is set to false automatically and the value is returned in response."
+                      },
+                      "subtotalWithoutTax": {
+                        "type": "number",
+                        "description": "Subtotal exclusive of tax. Must be equal to [eInvoiceItems.price * eInvoiceItems.quantity] if passed. If not set in request, it is set to [eInvoiceItems.price * eInvoiceItems.quantity] value automatically and the value is returned in response.",
+                        "format": "double"
+                      },
+                      "subtotalTax": {
+                        "type": "number",
+                        "description": "Subtotal tax. If not set in request, it is set to zero automatically and the value is returned in response",
+                        "format": "double"
+                      },
+                      "extraCharges": {
+                        "type": "number",
+                        "description": "Extra charges levied. If not set in request, it is set to null automatically and the value is returned in response.",
+                        "format": "double"
+                      },
+                      "chargeDescription": {
+                        "type": "string",
+                        "description": "Description of charge levied. If not set in request, it is set to null automatically and the value is returned in response."
+                      },
+                      "merchantReferenceId": {
+                        "type": "string",
+                        "description": "The merchant account identifier for which the payment link is created."
+                      },
+                      "invoiceDiscount": {
+                        "type": "number",
+                        "description": "Discount applied on invoice. If not set in request, it is set to null automatically and the value is returned in response.",
+                        "format": "double"
+                      },
+                      "language": {
+                        "type": "string",
+                        "description": "Language to be displayed in Payment Page. If not set in request, it is set to \"EN\" automatically and the value is returned in response.",
+                        "enum": [
+                          "EN",
+                          "AR"
+                        ]
+                      }
+                    }
+                  },
+                  "expiryDate": {
+                    "type": "string",
+                    "description": "Expiry date of payment link. If not set in request, it is set to a date of 30 days after activation date automatically and the value is returned in response. If activationDate is not set, the date of 30 days after payment link creation date is set as expiry date and it is returned in response.",
+                    "format": "date"
+                  },
+                  "activationDate": {
+                    "type": "string",
+                    "description": "Activation date of payment link. If not set in request, it is set to null the value is returned in response.",
+                    "format": "date"
+                  }
+                }
+              },
+              "examples": {
+                "SuccessfulRequest": {
+                  "value": {
+                    "amount": 20,
+                    "currency": "SAR",
+                    "customer": {
+                      "email": "test2@gmail.com",
+                      "phoneCountryCode": "+966",
+                      "phoneNumber": "511111111",
+                      "name": "John"
+                    },
+                    "eInvoiceDetails": {
+                      "type": "Detailed",
+                      "collectCustomersBillingShippingAddress": true,
+                      "preAuthorizeAmount": true,
+                      "subtotalWithoutTax": 20,
+                      "subtotalTax": 0,
+                      "subtotal": 20,
+                      "grandTotal": 20,
+                      "extraCharges": 0,
+                      "extraChargesType": "Amount",
+                      "chargeDescription": "My commerce payment",
+                      "merchantReferenceId": "3fa283474",
+                      "invoiceDiscount": 0,
+                      "invoiceDiscountType": "Amount",
+                      "language": "EN",
+                      "eInvoiceItems": [
+                        {
+                          "eInvoiceItemId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                          "description": "Popsicles",
+                          "price": 10,
+                          "priceWithDiscount": 10,
+                          "priceTax": 0,
+                          "priceTotal": 10,
+                          "quantity": 2,
+                          "sku": "1245",
+                          "itemDiscount": 0,
+                          "itemDiscountType": "Amount",
+                          "tax": 0,
+                          "taxType": "Amount",
+                          "totalWithoutTax": 20,
+                          "totalTax": 0,
+                          "total": 20
+                        }
+                      ]
+                    },
+                    "expiryDate": "2023-02-10T08:54:33.617Z",
+                    "activationDate": "2023-01-23T08:54:33.617Z"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "201",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"paymentIntent\": {\n        \"link\": \"https://merchant.geidea.net/payByLink/y1u-w7l-7kx-ave\",\n        \"customer\": {\n            \"customerId\": \"5c1b22c7-afce-4d62-3418-08daffb5fd79\",\n            \"email\": \"test2@gmail.com\",\n            \"phoneNumber\": \"511111111\",\n            \"phoneCountryCode\": \"+966\",\n            \"name\": \"John\",\n            \"updatedBy\": null,\n            \"updatedDate\": \"2023-01-30T19:17:00.1230959Z\",\n            \"addresses\": []\n        },\n        \"eInvoiceDetails\": {\n            \"type\": \"Detailed\",\n            \"collectCustomersBillingShippingAddress\": true,\n            \"preAuthorizeAmount\": true,\n            \"subtotalWithoutTax\": 20,\n            \"subtotalTax\": 0,\n            \"subtotal\": 20,\n            \"grandTotal\": 20,\n            \"extraCharges\": 0,\n            \"extraChargesType\": \"Amount\",\n            \"chargeDescription\": \"string\",\n            \"merchantReferenceId\": \"string\",\n            \"invoiceDiscount\": 0,\n            \"invoiceDiscountType\": \"Amount\",\n            \"language\": \"EN\",\n            \"eInvoiceItems\": [\n                {\n                    \"eInvoiceItemId\": \"dedd5cc5-3b69-436b-6cc3-08daffb5fdb9\",\n                    \"description\": \"string\",\n                    \"price\": 10,\n                    \"priceWithDiscount\": 10,\n                    \"priceTax\": 0,\n                    \"priceTotal\": 10,\n                    \"quantity\": 2,\n                    \"sku\": \"string\",\n                    \"itemDiscount\": 0,\n                    \"itemDiscountType\": \"Amount\",\n                    \"tax\": 0,\n                    \"taxType\": \"Amount\",\n                    \"totalWithoutTax\": 20,\n                    \"totalTax\": 0,\n                    \"total\": 20\n                }\n            ]\n        },\n        \"eInvoiceSentLinks\": [],\n        \"paymentIntentId\": \"3e6b56a1-2d9b-45dc-ac40-08daffad24e3\",\n        \"number\": \"681954961446\",\n        \"urlSlug\": \"y1u-w7l-7kx-ave\",\n        \"type\": \"EInvoice\",\n        \"amount\": 20,\n        \"currency\": \"SAR\",\n        \"merchantId\": \"e80ece7e-fb2a-4c0b-de94-08d8a29a107b\",\n        \"merchantPublicKey\": \"a087f4ca-9890-407b-9c2f-7630836cc020\",\n        \"expiryDate\": \"2023-02-10T08:54:33.617Z\",\n        \"activationDate\": \"2023-01-29T08:54:33.617Z\",\n        \"status\": \"Created\",\n        \"customerId\": \"5c1b22c7-afce-4d62-3418-08daffb5fd79\",\n        \"eInvoiceUploadId\": null,\n        \"staticPaylinkId\": null,\n        \"subscriptionId\": null,\n        \"subscriptionOccurrenceId\": null,\n        \"orders\": [],\n        \"isPending\": true,\n        \"createdDate\": \"2023-01-30T19:17:00.1779812Z\",\n        \"createdBy\": \"e80ece7e-fb2a-4c0b-de94-08d8a29a107b\",\n        \"updatedDate\": null,\n        \"updatedBy\": null\n    },\n    \"termsAndConditions\": null,\n    \"responseMessage\": \"Success\",\n    \"detailedResponseMessage\": \"The operation was successful\",\n    \"language\": \"EN\",\n    \"responseCode\": \"000\",\n    \"detailedResponseCode\": \"000\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "paymentIntent": {
+                      "type": "object",
+                      "properties": {
+                        "link": {
+                          "type": "string",
+                          "example": "https://merchant.geidea.net/payByLink/y1u-w7l-7kx-ave"
+                        },
+                        "customer": {
+                          "type": "object",
+                          "properties": {
+                            "customerId": {
+                              "type": "string",
+                              "example": "5c1b22c7-afce-4d62-3418-08daffb5fd79"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "test2@gmail.com"
+                            },
+                            "phoneNumber": {
+                              "type": "string",
+                              "example": "511111111"
+                            },
+                            "phoneCountryCode": {
+                              "type": "string",
+                              "example": "+966"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "John"
+                            },
+                            "updatedBy": {
+                              
+                            },
+                            "updatedDate": {
+                              "type": "string",
+                              "example": "2023-01-30T19:17:00.1230959Z"
+                            },
+                            "addresses": {
+                              "type": "array"
+                            }
+                          }
+                        },
+                        "eInvoiceDetails": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "example": "Detailed"
+                            },
+                            "collectCustomersBillingShippingAddress": {
+                              "type": "boolean",
+                              "example": true,
+                              "default": true
+                            },
+                            "preAuthorizeAmount": {
+                              "type": "boolean",
+                              "example": true,
+                              "default": true
+                            },
+                            "subtotalWithoutTax": {
+                              "type": "integer",
+                              "example": 20,
+                              "default": 0
+                            },
+                            "subtotalTax": {
+                              "type": "integer",
+                              "example": 0,
+                              "default": 0
+                            },
+                            "subtotal": {
+                              "type": "integer",
+                              "example": 20,
+                              "default": 0
+                            },
+                            "grandTotal": {
+                              "type": "integer",
+                              "example": 20,
+                              "default": 0
+                            },
+                            "extraCharges": {
+                              "type": "integer",
+                              "example": 0,
+                              "default": 0
+                            },
+                            "extraChargesType": {
+                              "type": "string",
+                              "example": "Amount"
+                            },
+                            "chargeDescription": {
+                              "type": "string",
+                              "example": "string"
+                            },
+                            "merchantReferenceId": {
+                              "type": "string",
+                              "example": "string"
+                            },
+                            "invoiceDiscount": {
+                              "type": "integer",
+                              "example": 0,
+                              "default": 0
+                            },
+                            "invoiceDiscountType": {
+                              "type": "string",
+                              "example": "Amount"
+                            },
+                            "language": {
+                              "type": "string",
+                              "example": "EN"
+                            },
+                            "eInvoiceItems": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "eInvoiceItemId": {
+                                    "type": "string",
+                                    "example": "dedd5cc5-3b69-436b-6cc3-08daffb5fdb9"
+                                  },
+                                  "description": {
+                                    "type": "string",
+                                    "example": "string"
+                                  },
+                                  "price": {
+                                    "type": "integer",
+                                    "example": 10,
+                                    "default": 0
+                                  },
+                                  "priceWithDiscount": {
+                                    "type": "integer",
+                                    "example": 10,
+                                    "default": 0
+                                  },
+                                  "priceTax": {
+                                    "type": "integer",
+                                    "example": 0,
+                                    "default": 0
+                                  },
+                                  "priceTotal": {
+                                    "type": "integer",
+                                    "example": 10,
+                                    "default": 0
+                                  },
+                                  "quantity": {
+                                    "type": "integer",
+                                    "example": 2,
+                                    "default": 0
+                                  },
+                                  "sku": {
+                                    "type": "string",
+                                    "example": "string"
+                                  },
+                                  "itemDiscount": {
+                                    "type": "integer",
+                                    "example": 0,
+                                    "default": 0
+                                  },
+                                  "itemDiscountType": {
+                                    "type": "string",
+                                    "example": "Amount"
+                                  },
+                                  "tax": {
+                                    "type": "integer",
+                                    "example": 0,
+                                    "default": 0
+                                  },
+                                  "taxType": {
+                                    "type": "string",
+                                    "example": "Amount"
+                                  },
+                                  "totalWithoutTax": {
+                                    "type": "integer",
+                                    "example": 20,
+                                    "default": 0
+                                  },
+                                  "totalTax": {
+                                    "type": "integer",
+                                    "example": 0,
+                                    "default": 0
+                                  },
+                                  "total": {
+                                    "type": "integer",
+                                    "example": 20,
+                                    "default": 0
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "eInvoiceSentLinks": {
+                          "type": "array"
+                        },
+                        "paymentIntentId": {
+                          "type": "string",
+                          "example": "3e6b56a1-2d9b-45dc-ac40-08daffad24e3"
+                        },
+                        "number": {
+                          "type": "string",
+                          "example": "681954961446"
+                        },
+                        "urlSlug": {
+                          "type": "string",
+                          "example": "y1u-w7l-7kx-ave"
+                        },
+                        "type": {
+                          "type": "string",
+                          "example": "EInvoice"
+                        },
+                        "amount": {
+                          "type": "integer",
+                          "example": 20,
+                          "default": 0
+                        },
+                        "currency": {
+                          "type": "string",
+                          "example": "SAR"
+                        },
+                        "merchantId": {
+                          "type": "string",
+                          "example": "e80ece7e-fb2a-4c0b-de94-08d8a29a107b"
+                        },
+                        "merchantPublicKey": {
+                          "type": "string",
+                          "example": "a087f4ca-9890-407b-9c2f-7630836cc020"
+                        },
+                        "expiryDate": {
+                          "type": "string",
+                          "example": "2023-02-10T08:54:33.617Z"
+                        },
+                        "activationDate": {
+                          "type": "string",
+                          "example": "2023-01-29T08:54:33.617Z"
+                        },
+                        "status": {
+                          "type": "string",
+                          "example": "Created"
+                        },
+                        "customerId": {
+                          "type": "string",
+                          "example": "5c1b22c7-afce-4d62-3418-08daffb5fd79"
+                        },
+                        "eInvoiceUploadId": {
+                          
+                        },
+                        "staticPaylinkId": {
+                          
+                        },
+                        "subscriptionId": {
+                          
+                        },
+                        "subscriptionOccurrenceId": {
+                          
+                        },
+                        "orders": {
+                          "type": "array"
+                        },
+                        "isPending": {
+                          "type": "boolean",
+                          "example": true,
+                          "default": true
+                        },
+                        "createdDate": {
+                          "type": "string",
+                          "example": "2023-01-30T19:17:00.1779812Z"
+                        },
+                        "createdBy": {
+                          "type": "string",
+                          "example": "e80ece7e-fb2a-4c0b-de94-08d8a29a107b"
+                        },
+                        "updatedDate": {
+                          
+                        },
+                        "updatedBy": {
+                          
+                        }
+                      }
+                    },
+                    "termsAndConditions": {
+                      
+                    },
+                    "responseMessage": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "detailedResponseMessage": {
+                      "type": "string",
+                      "example": "The operation was successful"
+                    },
+                    "language": {
+                      "type": "string",
+                      "example": "EN"
+                    },
+                    "responseCode": {
+                      "type": "string",
+                      "example": "000"
+                    },
+                    "detailedResponseCode": {
+                      "type": "string",
+                      "example": "000"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"type\": \"https://tools.ietf.org/html/rfc7231#section-6.5.1\",\n    \"title\": \"One or more validation errors occurred.\",\n    \"status\": 400,\n    \"traceId\": \"00-0ac27789dc3a69904dea094826a51fac-7df969aada378cfd-01\",\n    \"errors\": {\n        \"ActivationDate\": [\n            \"'Activation date' must be greater than 01/29/2023\"\n        ]\n    }\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "example": "https://tools.ietf.org/html/rfc7231#section-6.5.1"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "One or more validation errors occurred."
+                    },
+                    "status": {
+                      "type": "integer",
+                      "example": 400,
+                      "default": 0
+                    },
+                    "traceId": {
+                      "type": "string",
+                      "example": "00-0ac27789dc3a69904dea094826a51fac-7df969aada378cfd-01"
+                    },
+                    "errors": {
+                      "type": "object",
+                      "properties": {
+                        "ActivationDate": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "example": "'Activation date' must be greater than 01/29/2023"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "get": {
+        "summary": "Fetch All or Search Payment Links",
+        "description": "",
+        "operationId": "find-list-of-payment-intents",
+        "parameters": [
+          {
+            "name": "FromDate",
+            "in": "query",
+            "description": "Start Date",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "ToDate",
+            "in": "query",
+            "description": "End Date",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "FromAmount",
+            "in": "query",
+            "description": "Amount range begin, min amount",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "ToAmount",
+            "in": "query",
+            "description": "Amount range end, max amount",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "Currency",
+            "in": "query",
+            "description": "Currency in which payment link is created",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "SAR",
+                "EGP"
+              ]
+            }
+          },
+          {
+            "name": "SortOrder",
+            "in": "query",
+            "description": "Order of sorting of payment links (ASC, DESC)",
+            "schema": {
+              "type": "string",
+              "default": "ASC"
+            }
+          },
+          {
+            "name": "SortBy",
+            "in": "query",
+            "description": "Indicates the field to sort by",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Name"
+              ],
+              "default": "Name"
+            }
+          },
+          {
+            "name": "Skip",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "Take",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 50
+            }
+          },
+          {
+            "name": "TotalCountOnly",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "EInvoiceUploadId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "StaticPaylinkId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Number",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "HasOrders",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "FromPaidDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "ToPaidDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "CustomerName",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Reference",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "SubscriptionId",
+            "in": "query",
+            "description": "ID of subscription used for recurring payments",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"paymentIntents\": [\n        {\n            \"link\": \"https://merchant.geidea.net/payByLink/cte-dyr-1o1-bms\",\n            \"customer\": {\n                \"customerId\": \"2fdeb991-fc85-4f44-1437-08daf7e8daf6\",\n                \"email\": \"test2@gmail.com\",\n                \"phoneNumber\": \"511111111\",\n                \"phoneCountryCode\": \"+966\",\n                \"name\": \"John\",\n                \"updatedBy\": null,\n                \"updatedDate\": \"2023-01-24T06:44:41.215432Z\",\n                \"addresses\": []\n            },\n            \"eInvoiceDetails\": {\n                \"type\": \"Detailed\",\n                \"collectCustomersBillingShippingAddress\": true,\n                \"preAuthorizeAmount\": true,\n                \"subtotalWithoutTax\": 20.00,\n                \"subtotalTax\": 0.00,\n                \"subtotal\": 20.00,\n                \"grandTotal\": 20.00,\n                \"extraCharges\": 0.00,\n                \"extraChargesType\": \"Amount\",\n                \"chargeDescription\": \"string\",\n                \"merchantReferenceId\": \"string\",\n                \"invoiceDiscount\": 0.00,\n                \"invoiceDiscountType\": \"Amount\",\n                \"language\": \"EN\",\n                \"eInvoiceItems\": [\n                    {\n                        \"eInvoiceItemId\": \"4d20400e-ad21-42b3-6020-08daf7e7b64d\",\n                        \"description\": \"string\",\n                        \"price\": 10.00,\n                        \"priceWithDiscount\": 10.00,\n                        \"priceTax\": 0.00,\n                        \"priceTotal\": 10.00,\n                        \"quantity\": 2,\n                        \"sku\": \"string\",\n                        \"itemDiscount\": 0.00,\n                        \"itemDiscountType\": \"Amount\",\n                        \"tax\": 0.00,\n                        \"taxType\": \"Amount\",\n                        \"totalWithoutTax\": 20.00,\n                        \"totalTax\": 0.00,\n                        \"total\": 20.00\n                    }\n                ]\n            },\n            \"eInvoiceSentLinks\": [],\n            \"paymentIntentId\": \"26c8f032-6789-466a-7909-08daf7e7b637\",\n            \"number\": \"803262445358\",\n            \"urlSlug\": \"cte-dyr-1o1-bms\",\n            \"type\": \"EInvoice\",\n            \"amount\": 20.00,\n            \"currency\": \"SAR\",\n            \"merchantId\": \"e80ece7e-fb2a-4c0b-de94-08d8a29a107b\",\n            \"merchantPublicKey\": \"a087f4ca-9890-407b-9c2f-7630836cc020\",\n            \"expiryDate\": \"2023-02-10T08:54:33.617Z\",\n            \"activationDate\": \"2023-02-10T08:54:33.617Z\",\n            \"status\": \"Created\",\n            \"customerId\": \"2fdeb991-fc85-4f44-1437-08daf7e8daf6\",\n            \"eInvoiceUploadId\": null,\n            \"staticPaylinkId\": null,\n            \"subscriptionId\": null,\n            \"subscriptionOccurrenceId\": null,\n            \"orders\": [],\n            \"isPending\": true,\n            \"createdDate\": \"2023-01-24T06:44:41.2846272Z\",\n            \"createdBy\": \"e80ece7e-fb2a-4c0b-de94-08d8a29a107b\",\n            \"updatedDate\": null,\n            \"updatedBy\": null\n        },\n        {\n            \"link\": \"https://merchant.geidea.net/payByLink/84u-jqk-jl9-qye\",\n            \"customer\": {\n                \"customerId\": \"85a60e5c-cfe3-4740-7a29-08daf7e7b5df\",\n                \"email\": \"test2@gmail.com\",\n                \"phoneNumber\": \"511111111\",\n                \"phoneCountryCode\": \"+966\",\n                \"name\": \"John\",\n                \"updatedBy\": null,\n                \"updatedDate\": \"2023-01-24T06:37:46.2975566Z\",\n                \"addresses\": []\n            },\n            \"eInvoiceDetails\": {\n                \"type\": \"Detailed\",\n                \"collectCustomersBillingShippingAddress\": true,\n                \"preAuthorizeAmount\": true,\n                \"subtotalWithoutTax\": 20.00,\n                \"subtotalTax\": 0.00,\n                \"subtotal\": 20.00,\n                \"grandTotal\": 20.00,\n                \"extraCharges\": 0.00,\n                \"extraChargesType\": \"Amount\",\n                \"chargeDescription\": \"string\",\n                \"merchantReferenceId\": \"string\",\n                \"invoiceDiscount\": 0.00,\n                \"invoiceDiscountType\": \"Amount\",\n                \"language\": \"EN\",\n                \"eInvoiceItems\": [\n                    {\n                        \"eInvoiceItemId\": \"a0e2f9c2-5f52-4d85-34fa-08daf7f29d81\",\n                        \"description\": \"string\",\n                        \"price\": 10.00,\n                        \"priceWithDiscount\": 10.00,\n                        \"priceTax\": 0.00,\n                        \"priceTotal\": 10.00,\n                        \"quantity\": 2,\n                        \"sku\": \"string\",\n                        \"itemDiscount\": 0.00,\n                        \"itemDiscountType\": \"Amount\",\n                        \"tax\": 0.00,\n                        \"taxType\": \"Amount\",\n                        \"totalWithoutTax\": 20.00,\n                        \"totalTax\": 0.00,\n                        \"total\": 20.00\n                    }\n                ]\n            },\n            \"eInvoiceSentLinks\": [],\n            \"paymentIntentId\": \"299b0253-b811-4e99-0794-08daf7ec2bc4\",\n            \"number\": \"949182445131\",\n            \"urlSlug\": \"84u-jqk-jl9-qye\",\n            \"type\": \"EInvoice\",\n            \"amount\": 20.00,\n            \"currency\": \"SAR\",\n            \"merchantId\": \"e80ece7e-fb2a-4c0b-de94-08d8a29a107b\",\n            \"merchantPublicKey\": \"a087f4ca-9890-407b-9c2f-7630836cc020\",\n            \"expiryDate\": \"2023-02-10T08:54:33.617Z\",\n            \"activationDate\": \"2023-02-10T08:54:33.617Z\",\n            \"status\": \"Created\",\n            \"customerId\": \"85a60e5c-cfe3-4740-7a29-08daf7e7b5df\",\n            \"eInvoiceUploadId\": null,\n            \"staticPaylinkId\": null,\n            \"subscriptionId\": null,\n            \"subscriptionOccurrenceId\": null,\n            \"orders\": [],\n            \"isPending\": true,\n            \"createdDate\": \"2023-01-24T06:37:46.3649772Z\",\n            \"createdBy\": \"e80ece7e-fb2a-4c0b-de94-08d8a29a107b\",\n            \"updatedDate\": null,\n            \"updatedBy\": null\n        },\n        {\n            \"link\": \"https://merchant.geidea.net/payByLink/62s-g9t-o8i-9cp\",\n            \"customer\": {\n                \"customerId\": \"ed46791d-22da-41f4-7a1c-08daf7e7b5df\",\n                \"email\": \"test@gmail.com\",\n                \"phoneNumber\": \"511111111\",\n                \"phoneCountryCode\": \"+966\",\n                \"name\": \"John\",\n                \"updatedBy\": \"PGW\",\n                \"updatedDate\": \"2023-01-23T21:51:29.2698764Z\",\n                \"addresses\": []\n            },\n            \"eInvoiceDetails\": {\n                \"type\": \"Detailed\",\n                \"collectCustomersBillingShippingAddress\": true,\n                \"preAuthorizeAmount\": true,\n                \"subtotalWithoutTax\": 100.00,\n                \"subtotalTax\": 0.00,\n                \"subtotal\": 100.00,\n                \"grandTotal\": 100.00,\n                \"extraCharges\": 0.00,\n                \"extraChargesType\": \"Amount\",\n                \"chargeDescription\": \"string\",\n                \"merchantReferenceId\": \"string\",\n                \"invoiceDiscount\": 0.00,\n                \"invoiceDiscountType\": \"Amount\",\n                \"language\": \"EN\",\n                \"eInvoiceItems\": [\n                    {\n                        \"eInvoiceItemId\": \"eeeead6c-db54-4906-34eb-08daf7f29d81\",\n                        \"description\": \"string\",\n                        \"price\": 10.00,\n                        \"priceWithDiscount\": 10.00,\n                        \"priceTax\": 0.00,\n                        \"priceTotal\": 10.00,\n                        \"quantity\": 10,\n                        \"sku\": \"string\",\n                        \"itemDiscount\": 0.00,\n                        \"itemDiscountType\": \"Amount\",\n                        \"tax\": 0.00,\n                        \"taxType\": \"Amount\",\n                        \"totalWithoutTax\": 100.00,\n                        \"totalTax\": 0.00,\n                        \"total\": 100.00\n                    }\n                ]\n            },\n            \"eInvoiceSentLinks\": [],\n            \"paymentIntentId\": \"82249793-ef36-4478-0776-08daf7ec2bc4\",\n            \"number\": \"901996084874\",\n            \"urlSlug\": \"62s-g9t-o8i-9cp\",\n            \"type\": \"EInvoice\",\n            \"amount\": 100.00,\n            \"currency\": \"SAR\",\n            \"merchantId\": \"e80ece7e-fb2a-4c0b-de94-08d8a29a107b\",\n            \"merchantPublicKey\": \"a087f4ca-9890-407b-9c2f-7630836cc020\",\n            \"expiryDate\": \"2023-02-10T08:54:33.617Z\",\n            \"activationDate\": \"2023-02-10T08:54:33.617Z\",\n            \"status\": \"SentToCustomer\",\n            \"customerId\": \"ed46791d-22da-41f4-7a1c-08daf7e7b5df\",\n            \"eInvoiceUploadId\": null,\n            \"staticPaylinkId\": null,\n            \"subscriptionId\": null,\n            \"subscriptionOccurrenceId\": null,\n            \"orders\": [],\n            \"isPending\": true,\n            \"createdDate\": \"2023-01-23T20:32:53.765755Z\",\n            \"createdBy\": \"e80ece7e-fb2a-4c0b-de94-08d8a29a107b\",\n            \"updatedDate\": \"2023-01-23T21:47:03.318728Z\",\n            \"updatedBy\": \"e80ece7e-fb2a-4c0b-de94-08d8a29a107b\"\n        }\n    ],\n    \"totalCount\": 3,\n    \"responseMessage\": \"Success\",\n    \"detailedResponseMessage\": \"The operation was successful\",\n    \"language\": \"EN\",\n    \"responseCode\": \"000\",\n    \"detailedResponseCode\": \"000\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "paymentIntents": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "link": {
+                            "type": "string",
+                            "example": "https://merchant.geidea.net/payByLink/cte-dyr-1o1-bms"
+                          },
+                          "customer": {
+                            "type": "object",
+                            "properties": {
+                              "customerId": {
+                                "type": "string",
+                                "example": "2fdeb991-fc85-4f44-1437-08daf7e8daf6"
+                              },
+                              "email": {
+                                "type": "string",
+                                "example": "test2@gmail.com"
+                              },
+                              "phoneNumber": {
+                                "type": "string",
+                                "example": "511111111"
+                              },
+                              "phoneCountryCode": {
+                                "type": "string",
+                                "example": "+966"
+                              },
+                              "name": {
+                                "type": "string",
+                                "example": "John"
+                              },
+                              "updatedBy": {
+                                
+                              },
+                              "updatedDate": {
+                                "type": "string",
+                                "example": "2023-01-24T06:44:41.215432Z"
+                              },
+                              "addresses": {
+                                "type": "array"
+                              }
+                            }
+                          },
+                          "eInvoiceDetails": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "example": "Detailed"
+                              },
+                              "collectCustomersBillingShippingAddress": {
+                                "type": "boolean",
+                                "example": true,
+                                "default": true
+                              },
+                              "preAuthorizeAmount": {
+                                "type": "boolean",
+                                "example": true,
+                                "default": true
+                              },
+                              "subtotalWithoutTax": {
+                                "type": "integer",
+                                "example": 20,
+                                "default": 0
+                              },
+                              "subtotalTax": {
+                                "type": "integer",
+                                "example": 0,
+                                "default": 0
+                              },
+                              "subtotal": {
+                                "type": "integer",
+                                "example": 20,
+                                "default": 0
+                              },
+                              "grandTotal": {
+                                "type": "integer",
+                                "example": 20,
+                                "default": 0
+                              },
+                              "extraCharges": {
+                                "type": "integer",
+                                "example": 0,
+                                "default": 0
+                              },
+                              "extraChargesType": {
+                                "type": "string",
+                                "example": "Amount"
+                              },
+                              "chargeDescription": {
+                                "type": "string",
+                                "example": "string"
+                              },
+                              "merchantReferenceId": {
+                                "type": "string",
+                                "example": "string"
+                              },
+                              "invoiceDiscount": {
+                                "type": "integer",
+                                "example": 0,
+                                "default": 0
+                              },
+                              "invoiceDiscountType": {
+                                "type": "string",
+                                "example": "Amount"
+                              },
+                              "language": {
+                                "type": "string",
+                                "example": "EN"
+                              },
+                              "eInvoiceItems": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "eInvoiceItemId": {
+                                      "type": "string",
+                                      "example": "4d20400e-ad21-42b3-6020-08daf7e7b64d"
+                                    },
+                                    "description": {
+                                      "type": "string",
+                                      "example": "string"
+                                    },
+                                    "price": {
+                                      "type": "integer",
+                                      "example": 10,
+                                      "default": 0
+                                    },
+                                    "priceWithDiscount": {
+                                      "type": "integer",
+                                      "example": 10,
+                                      "default": 0
+                                    },
+                                    "priceTax": {
+                                      "type": "integer",
+                                      "example": 0,
+                                      "default": 0
+                                    },
+                                    "priceTotal": {
+                                      "type": "integer",
+                                      "example": 10,
+                                      "default": 0
+                                    },
+                                    "quantity": {
+                                      "type": "integer",
+                                      "example": 2,
+                                      "default": 0
+                                    },
+                                    "sku": {
+                                      "type": "string",
+                                      "example": "string"
+                                    },
+                                    "itemDiscount": {
+                                      "type": "integer",
+                                      "example": 0,
+                                      "default": 0
+                                    },
+                                    "itemDiscountType": {
+                                      "type": "string",
+                                      "example": "Amount"
+                                    },
+                                    "tax": {
+                                      "type": "integer",
+                                      "example": 0,
+                                      "default": 0
+                                    },
+                                    "taxType": {
+                                      "type": "string",
+                                      "example": "Amount"
+                                    },
+                                    "totalWithoutTax": {
+                                      "type": "integer",
+                                      "example": 20,
+                                      "default": 0
+                                    },
+                                    "totalTax": {
+                                      "type": "integer",
+                                      "example": 0,
+                                      "default": 0
+                                    },
+                                    "total": {
+                                      "type": "integer",
+                                      "example": 20,
+                                      "default": 0
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "eInvoiceSentLinks": {
+                            "type": "array"
+                          },
+                          "paymentIntentId": {
+                            "type": "string",
+                            "example": "26c8f032-6789-466a-7909-08daf7e7b637"
+                          },
+                          "number": {
+                            "type": "string",
+                            "example": "803262445358"
+                          },
+                          "urlSlug": {
+                            "type": "string",
+                            "example": "cte-dyr-1o1-bms"
+                          },
+                          "type": {
+                            "type": "string",
+                            "example": "EInvoice"
+                          },
+                          "amount": {
+                            "type": "integer",
+                            "example": 20,
+                            "default": 0
+                          },
+                          "currency": {
+                            "type": "string",
+                            "example": "SAR"
+                          },
+                          "merchantId": {
+                            "type": "string",
+                            "example": "e80ece7e-fb2a-4c0b-de94-08d8a29a107b"
+                          },
+                          "merchantPublicKey": {
+                            "type": "string",
+                            "example": "a087f4ca-9890-407b-9c2f-7630836cc020"
+                          },
+                          "expiryDate": {
+                            "type": "string",
+                            "example": "2023-02-10T08:54:33.617Z"
+                          },
+                          "activationDate": {
+                            "type": "string",
+                            "example": "2023-02-10T08:54:33.617Z"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "Created"
+                          },
+                          "customerId": {
+                            "type": "string",
+                            "example": "2fdeb991-fc85-4f44-1437-08daf7e8daf6"
+                          },
+                          "eInvoiceUploadId": {
+                            
+                          },
+                          "staticPaylinkId": {
+                            
+                          },
+                          "subscriptionId": {
+                            
+                          },
+                          "subscriptionOccurrenceId": {
+                            
+                          },
+                          "orders": {
+                            "type": "array"
+                          },
+                          "isPending": {
+                            "type": "boolean",
+                            "example": true,
+                            "default": true
+                          },
+                          "createdDate": {
+                            "type": "string",
+                            "example": "2023-01-24T06:44:41.2846272Z"
+                          },
+                          "createdBy": {
+                            "type": "string",
+                            "example": "e80ece7e-fb2a-4c0b-de94-08d8a29a107b"
+                          },
+                          "updatedDate": {
+                            
+                          },
+                          "updatedBy": {
+                            
+                          }
+                        }
+                      }
+                    },
+                    "totalCount": {
+                      "type": "integer",
+                      "example": 3,
+                      "default": 0
+                    },
+                    "responseMessage": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "detailedResponseMessage": {
+                      "type": "string",
+                      "example": "The operation was successful"
+                    },
+                    "language": {
+                      "type": "string",
+                      "example": "EN"
+                    },
+                    "responseCode": {
+                      "type": "string",
+                      "example": "000"
+                    },
+                    "detailedResponseCode": {
+                      "type": "string",
+                      "example": "000"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "put": {
+        "summary": "Update Payment Intent",
+        "description": "API to update the Payment Intent",
+        "operationId": "update-payment-intent",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "paymentIntentId",
+                  "amount",
+                  "currency"
+                ],
+                "properties": {
+                  "paymentIntentId": {
+                    "type": "string",
+                    "description": "Payment Intent ID generated when a new request was created.",
+                    "default": "236b4763-0bc5-4d8b-f2ef-08db4614f0a2"
+                  },
+                  "amount": {
+                    "type": "number",
+                    "description": "Amount for which payment link is created. Amount must be greater than 0.01. Must be equal to [eInvoiceItems.price * eInvoiceItems.quantity]",
+                    "default": 20,
+                    "format": "double"
+                  },
+                  "currency": {
+                    "type": "string",
+                    "description": "Currency for which payment link is created. Currency must be 3 characters in length. Acceptable currencies are: SAR, AED",
+                    "enum": [
+                      "EGP",
+                      "SAR"
+                    ]
+                  },
+                  "customer": {
+                    "type": "object",
+                    "description": "Customer Object",
+                    "required": [
+                      "name",
+                      "email",
+                      "phoneCountryCode",
+                      "phoneNumber"
+                    ],
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Customer Name",
+                        "default": "Kiran"
+                      },
+                      "email": {
+                        "type": "string",
+                        "description": "Email of customer. One of email or phoneNumber must be present.",
+                        "default": "testmail@geidea.com"
+                      },
+                      "phoneCountryCode": {
+                        "type": "string",
+                        "description": "Country code of customer's phone number eg: \"+971\". If phoneNumber is passed, phoneCountryCode must be passed.",
+                        "default": "+20"
+                      },
+                      "phoneNumber": {
+                        "type": "string",
+                        "description": "Customer's phone number  eg: \"511111111\". If phoneCountryCode is passed, phoneNumber must be passed.  One of email or phoneNumber must be present.",
+                        "default": "8003030083"
+                      }
+                    }
+                  },
+                  "eInvoiceDetails": {
+                    "type": "object",
+                    "description": "e-Invoice details object",
+                    "required": [
+                      "subtotal",
+                      "grandTotal"
+                    ],
+                    "properties": {
+                      "eInvoiceItems": {
+                        "type": "array",
+                        "description": "List of e-Invoice items",
+                        "items": {
+                          "properties": {
+                            "eInvoiceItemId": {
+                              "type": "string",
+                              "description": "e-Invoice item ID",
+                              "default": "17e95202-d151-43ff-d6af-08db4614f0bb"
+                            },
+                            "description": {
+                              "type": "string",
+                              "description": "Item description. If not set in request, it is set to null automatically and the value is returned in response.",
+                              "default": "Subscription for TFM tech"
+                            },
+                            "price": {
+                              "type": "number",
+                              "description": "Item Price",
+                              "default": 10,
+                              "format": "double"
+                            },
+                            "quantity": {
+                              "type": "integer",
+                              "description": "Quantity of item",
+                              "default": 2,
+                              "format": "int32"
+                            },
+                            "itemDiscountType": {
+                              "type": "string",
+                              "description": "Type of discount applied on item",
+                              "default": "Amount",
+                              "enum": [
+                                "Amount",
+                                "Percentage"
+                              ]
+                            },
+                            "taxType": {
+                              "type": "string",
+                              "description": "Type of tax levied on item",
+                              "default": "Amount",
+                              "enum": [
+                                "Amount",
+                                "Percentage"
+                              ]
+                            },
+                            "total": {
+                              "type": "number",
+                              "description": "Total price including tax levied. Must be equal to [eInvoiceItems.price * eInvoiceItems.quantity]",
+                              "default": 20,
+                              "format": "double"
+                            },
+                            "priceWithDiscount": {
+                              "type": "number",
+                              "description": "Item price after discount is applied. If not set in request, it is set to value of eInvoiceItems.price automatically and the value is returned in response",
+                              "format": "double"
+                            },
+                            "priceTax": {
+                              "type": "number",
+                              "description": "Tax on Item Price. If not set in request, it is set to zero automatically and the value is returned in response.",
+                              "format": "double"
+                            },
+                            "priceTotal": {
+                              "type": "number",
+                              "description": "Total Price inclusive of Tax. If not set in request, it is set to value of eInvoiceItems.price automatically and the value is returned in response.",
+                              "format": "double"
+                            },
+                            "sku": {
+                              "type": "string",
+                              "description": "Item SKU. If not set in request, it is set to null automatically and the value is returned in response."
+                            },
+                            "itemDiscount": {
+                              "type": "number",
+                              "description": "Discount applied on item. If not set in request, it is set to null automatically and the value is returned in response.",
+                              "format": "double"
+                            },
+                            "tax": {
+                              "type": "number",
+                              "description": "Tax on item. If not set in request, it is set to null automatically and the value is returned in response.",
+                              "format": "double"
+                            },
+                            "totalWithoutTax": {
+                              "type": "number",
+                              "description": "Total price of item without tax. If not set in request, it is set to value of amount automatically and the value is returned in response.",
+                              "format": "double"
+                            },
+                            "totalTax": {
+                              "type": "number",
+                              "description": "Tax for the item. If not set in request, it is set to zero automatically and the value is returned in response.",
+                              "format": "double"
+                            }
+                          },
+                          "required": [
+                            "price",
+                            "quantity",
+                            "total"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "subtotal": {
+                        "type": "number",
+                        "description": "Subtotal inclusive of tax. Must be equal to [eInvoiceItems.price * eInvoiceItems.quantity]",
+                        "default": 20,
+                        "format": "double"
+                      },
+                      "grandTotal": {
+                        "type": "number",
+                        "description": "Grand Total. Must be equal to [eInvoiceItems.price * eInvoiceItems.quantity]. Must be same as amount.",
+                        "default": 20,
+                        "format": "double"
+                      },
+                      "extraChargesType": {
+                        "type": "string",
+                        "description": "Type of extra charges levied",
+                        "default": "Amount",
+                        "enum": [
+                          "Amount",
+                          "Percentage"
+                        ]
+                      },
+                      "invoiceDiscountType": {
+                        "type": "string",
+                        "description": "Type of discount applied on invoice",
+                        "default": "Amount",
+                        "enum": [
+                          "Amount",
+                          "Percentage"
+                        ]
+                      },
+                      "type": {
+                        "type": "string",
+                        "description": "Type of eInvoice. If not set in request, it is set to \"Detailed\" automatically and the value is returned in response.",
+                        "enum": [
+                          "Detailed",
+                          "Quick"
+                        ]
+                      },
+                      "collectCustomersBillingShippingAddress": {
+                        "type": "boolean",
+                        "description": "Flag indicating to capture Customer's billing and shipping addresses. If not set in request, it is set to false automatically and the value is returned in response"
+                      },
+                      "preAuthorizeAmount": {
+                        "type": "boolean",
+                        "description": "Flag indicating whether to preauthorize the amount. If not set in request, it is set to false automatically and the value is returned in response."
+                      },
+                      "subtotalWithoutTax": {
+                        "type": "number",
+                        "description": "Subtotal exclusive of tax. Must be equal to [eInvoiceItems.price * eInvoiceItems.quantity] if passed. If not set in request, it is set to [eInvoiceItems.price * eInvoiceItems.quantity] value automatically and the value is returned in response.",
+                        "format": "double"
+                      },
+                      "subtotalTax": {
+                        "type": "number",
+                        "description": "Subtotal tax. If not set in request, it is set to zero automatically and the value is returned in response",
+                        "format": "double"
+                      },
+                      "extraCharges": {
+                        "type": "number",
+                        "description": "Extra charges levied. If not set in request, it is set to null automatically and the value is returned in response.",
+                        "format": "double"
+                      },
+                      "chargeDescription": {
+                        "type": "string",
+                        "description": "Description of charge levied. If not set in request, it is set to null automatically and the value is returned in response."
+                      },
+                      "merchantReferenceId": {
+                        "type": "string",
+                        "description": "The merchant account identifier for which the payment link is created."
+                      },
+                      "invoiceDiscount": {
+                        "type": "number",
+                        "description": "Discount applied on invoice. If not set in request, it is set to null automatically and the value is returned in response.",
+                        "format": "double"
+                      },
+                      "language": {
+                        "type": "string",
+                        "description": "Language to be displayed in Payment Page. If not set in request, it is set to \"EN\" automatically and the value is returned in response.",
+                        "enum": [
+                          "EN",
+                          "AR"
+                        ]
+                      }
+                    }
+                  },
+                  "status": {
+                    "type": "string",
+                    "description": "Status of the Payment Intent. Only SentToCustomer is allowed for merchant to change",
+                    "enum": [
+                      "Created",
+                      "Incomplete",
+                      "Preauthorized",
+                      "Paid",
+                      "Expired",
+                      "SentToCustomer",
+                      "PartiallyCompleted"
+                    ]
+                  }
+                }
+              },
+              "examples": {
+                "StatusChange": {
+                  "value": {
+                    "paymentIntentId": "82249793-ef36-4478-0776-08daf7ec2bc4",
+                    "amount": 100,
+                    "currency": "SAR",
+                    "status": "SentToCustomer",
+                    "customer": {
+                      "email": "test@gmail.com",
+                      "phoneCountryCode": "+966",
+                      "phoneNumber": "511111111",
+                      "name": "John"
+                    },
+                    "eInvoiceDetails": {
+                      "type": "Detailed",
+                      "collectCustomersBillingShippingAddress": true,
+                      "preAuthorizeAmount": true,
+                      "subtotalWithoutTax": 100,
+                      "subtotalTax": 0,
+                      "subtotal": 100,
+                      "grandTotal": 100,
+                      "extraCharges": 0,
+                      "extraChargesType": "Amount",
+                      "chargeDescription": "string",
+                      "merchantReferenceId": "string",
+                      "invoiceDiscount": 0,
+                      "invoiceDiscountType": "Amount",
+                      "language": "EN",
+                      "eInvoiceItems": [
+                        {
+                          "eInvoiceItemId": "eeeead6c-db54-4906-34eb-08daf7f29d81",
+                          "description": "string",
+                          "price": 10,
+                          "priceWithDiscount": 10,
+                          "priceTax": 0,
+                          "priceTotal": 10,
+                          "quantity": 10,
+                          "sku": "string",
+                          "itemDiscount": 0,
+                          "itemDiscountType": "Amount",
+                          "tax": 0,
+                          "taxType": "Amount",
+                          "totalWithoutTax": 100,
+                          "totalTax": 0,
+                          "total": 100
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"paymentIntent\": {\n        \"link\": \"https://merchant.geidea.net/payByLink/62s-g9t-o8i-9cp\",\n        \"customer\": {\n            \"customerId\": \"ed46791d-22da-41f4-7a1c-08daf7e7b5df\",\n            \"email\": \"test@gmail.com\",\n            \"phoneNumber\": \"511111111\",\n            \"phoneCountryCode\": \"+966\",\n            \"name\": \"John\",\n            \"updatedBy\": \"PGW\",\n            \"updatedDate\": \"2023-01-23T21:51:29.2698764Z\",\n            \"addresses\": []\n        },\n        \"eInvoiceDetails\": {\n            \"type\": \"Detailed\",\n            \"collectCustomersBillingShippingAddress\": true,\n            \"preAuthorizeAmount\": true,\n            \"subtotalWithoutTax\": 100,\n            \"subtotalTax\": 0,\n            \"subtotal\": 100,\n            \"grandTotal\": 100,\n            \"extraCharges\": 0,\n            \"extraChargesType\": \"Amount\",\n            \"chargeDescription\": \"string\",\n            \"merchantReferenceId\": \"string\",\n            \"invoiceDiscount\": 0,\n            \"invoiceDiscountType\": \"Amount\",\n            \"language\": \"EN\",\n            \"eInvoiceItems\": [\n                {\n                    \"eInvoiceItemId\": \"eeeead6c-db54-4906-34eb-08daf7f29d81\",\n                    \"description\": \"string\",\n                    \"price\": 10,\n                    \"priceWithDiscount\": 10,\n                    \"priceTax\": 0,\n                    \"priceTotal\": 10,\n                    \"quantity\": 10,\n                    \"sku\": \"string\",\n                    \"itemDiscount\": 0,\n                    \"itemDiscountType\": \"Amount\",\n                    \"tax\": 0,\n                    \"taxType\": \"Amount\",\n                    \"totalWithoutTax\": 100,\n                    \"totalTax\": 0,\n                    \"total\": 100\n                }\n            ]\n        },\n        \"eInvoiceSentLinks\": [],\n        \"paymentIntentId\": \"82249793-ef36-4478-0776-08daf7ec2bc4\",\n        \"number\": \"901996084874\",\n        \"urlSlug\": \"62s-g9t-o8i-9cp\",\n        \"type\": \"EInvoice\",\n        \"amount\": 100,\n        \"currency\": \"SAR\",\n        \"merchantId\": \"e80ece7e-fb2a-4c0b-de94-08d8a29a107b\",\n        \"merchantPublicKey\": \"a087f4ca-9890-407b-9c2f-7630836cc020\",\n        \"expiryDate\": \"2023-02-10T08:54:33.617Z\",\n        \"activationDate\": \"2023-02-10T08:54:33.617Z\",\n        \"status\": \"SentToCustomer\",\n        \"customerId\": \"ed46791d-22da-41f4-7a1c-08daf7e7b5df\",\n        \"eInvoiceUploadId\": null,\n        \"staticPaylinkId\": null,\n        \"subscriptionId\": null,\n        \"subscriptionOccurrenceId\": null,\n        \"orders\": [],\n        \"isPending\": true,\n        \"createdDate\": \"2023-01-23T20:32:53.765755Z\",\n        \"createdBy\": \"e80ece7e-fb2a-4c0b-de94-08d8a29a107b\",\n        \"updatedDate\": \"2023-01-23T21:47:03.318728Z\",\n        \"updatedBy\": \"e80ece7e-fb2a-4c0b-de94-08d8a29a107b\"\n    },\n    \"termsAndConditions\": null,\n    \"responseMessage\": \"Success\",\n    \"detailedResponseMessage\": \"The operation was successful\",\n    \"language\": \"EN\",\n    \"responseCode\": \"000\",\n    \"detailedResponseCode\": \"000\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "paymentIntent": {
+                      "type": "object",
+                      "properties": {
+                        "link": {
+                          "type": "string",
+                          "example": "https://merchant.geidea.net/payByLink/62s-g9t-o8i-9cp"
+                        },
+                        "customer": {
+                          "type": "object",
+                          "properties": {
+                            "customerId": {
+                              "type": "string",
+                              "example": "ed46791d-22da-41f4-7a1c-08daf7e7b5df"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "test@gmail.com"
+                            },
+                            "phoneNumber": {
+                              "type": "string",
+                              "example": "511111111"
+                            },
+                            "phoneCountryCode": {
+                              "type": "string",
+                              "example": "+966"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "John"
+                            },
+                            "updatedBy": {
+                              "type": "string",
+                              "example": "PGW"
+                            },
+                            "updatedDate": {
+                              "type": "string",
+                              "example": "2023-01-23T21:51:29.2698764Z"
+                            },
+                            "addresses": {
+                              "type": "array"
+                            }
+                          }
+                        },
+                        "eInvoiceDetails": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "example": "Detailed"
+                            },
+                            "collectCustomersBillingShippingAddress": {
+                              "type": "boolean",
+                              "example": true,
+                              "default": true
+                            },
+                            "preAuthorizeAmount": {
+                              "type": "boolean",
+                              "example": true,
+                              "default": true
+                            },
+                            "subtotalWithoutTax": {
+                              "type": "integer",
+                              "example": 100,
+                              "default": 0
+                            },
+                            "subtotalTax": {
+                              "type": "integer",
+                              "example": 0,
+                              "default": 0
+                            },
+                            "subtotal": {
+                              "type": "integer",
+                              "example": 100,
+                              "default": 0
+                            },
+                            "grandTotal": {
+                              "type": "integer",
+                              "example": 100,
+                              "default": 0
+                            },
+                            "extraCharges": {
+                              "type": "integer",
+                              "example": 0,
+                              "default": 0
+                            },
+                            "extraChargesType": {
+                              "type": "string",
+                              "example": "Amount"
+                            },
+                            "chargeDescription": {
+                              "type": "string",
+                              "example": "string"
+                            },
+                            "merchantReferenceId": {
+                              "type": "string",
+                              "example": "string"
+                            },
+                            "invoiceDiscount": {
+                              "type": "integer",
+                              "example": 0,
+                              "default": 0
+                            },
+                            "invoiceDiscountType": {
+                              "type": "string",
+                              "example": "Amount"
+                            },
+                            "language": {
+                              "type": "string",
+                              "example": "EN"
+                            },
+                            "eInvoiceItems": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "eInvoiceItemId": {
+                                    "type": "string",
+                                    "example": "eeeead6c-db54-4906-34eb-08daf7f29d81"
+                                  },
+                                  "description": {
+                                    "type": "string",
+                                    "example": "string"
+                                  },
+                                  "price": {
+                                    "type": "integer",
+                                    "example": 10,
+                                    "default": 0
+                                  },
+                                  "priceWithDiscount": {
+                                    "type": "integer",
+                                    "example": 10,
+                                    "default": 0
+                                  },
+                                  "priceTax": {
+                                    "type": "integer",
+                                    "example": 0,
+                                    "default": 0
+                                  },
+                                  "priceTotal": {
+                                    "type": "integer",
+                                    "example": 10,
+                                    "default": 0
+                                  },
+                                  "quantity": {
+                                    "type": "integer",
+                                    "example": 10,
+                                    "default": 0
+                                  },
+                                  "sku": {
+                                    "type": "string",
+                                    "example": "string"
+                                  },
+                                  "itemDiscount": {
+                                    "type": "integer",
+                                    "example": 0,
+                                    "default": 0
+                                  },
+                                  "itemDiscountType": {
+                                    "type": "string",
+                                    "example": "Amount"
+                                  },
+                                  "tax": {
+                                    "type": "integer",
+                                    "example": 0,
+                                    "default": 0
+                                  },
+                                  "taxType": {
+                                    "type": "string",
+                                    "example": "Amount"
+                                  },
+                                  "totalWithoutTax": {
+                                    "type": "integer",
+                                    "example": 100,
+                                    "default": 0
+                                  },
+                                  "totalTax": {
+                                    "type": "integer",
+                                    "example": 0,
+                                    "default": 0
+                                  },
+                                  "total": {
+                                    "type": "integer",
+                                    "example": 100,
+                                    "default": 0
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "eInvoiceSentLinks": {
+                          "type": "array"
+                        },
+                        "paymentIntentId": {
+                          "type": "string",
+                          "example": "82249793-ef36-4478-0776-08daf7ec2bc4"
+                        },
+                        "number": {
+                          "type": "string",
+                          "example": "901996084874"
+                        },
+                        "urlSlug": {
+                          "type": "string",
+                          "example": "62s-g9t-o8i-9cp"
+                        },
+                        "type": {
+                          "type": "string",
+                          "example": "EInvoice"
+                        },
+                        "amount": {
+                          "type": "integer",
+                          "example": 100,
+                          "default": 0
+                        },
+                        "currency": {
+                          "type": "string",
+                          "example": "SAR"
+                        },
+                        "merchantId": {
+                          "type": "string",
+                          "example": "e80ece7e-fb2a-4c0b-de94-08d8a29a107b"
+                        },
+                        "merchantPublicKey": {
+                          "type": "string",
+                          "example": "a087f4ca-9890-407b-9c2f-7630836cc020"
+                        },
+                        "expiryDate": {
+                          "type": "string",
+                          "example": "2023-02-10T08:54:33.617Z"
+                        },
+                        "activationDate": {
+                          "type": "string",
+                          "example": "2023-02-10T08:54:33.617Z"
+                        },
+                        "status": {
+                          "type": "string",
+                          "example": "SentToCustomer"
+                        },
+                        "customerId": {
+                          "type": "string",
+                          "example": "ed46791d-22da-41f4-7a1c-08daf7e7b5df"
+                        },
+                        "eInvoiceUploadId": {
+                          
+                        },
+                        "staticPaylinkId": {
+                          
+                        },
+                        "subscriptionId": {
+                          
+                        },
+                        "subscriptionOccurrenceId": {
+                          
+                        },
+                        "orders": {
+                          "type": "array"
+                        },
+                        "isPending": {
+                          "type": "boolean",
+                          "example": true,
+                          "default": true
+                        },
+                        "createdDate": {
+                          "type": "string",
+                          "example": "2023-01-23T20:32:53.765755Z"
+                        },
+                        "createdBy": {
+                          "type": "string",
+                          "example": "e80ece7e-fb2a-4c0b-de94-08d8a29a107b"
+                        },
+                        "updatedDate": {
+                          "type": "string",
+                          "example": "2023-01-23T21:47:03.318728Z"
+                        },
+                        "updatedBy": {
+                          "type": "string",
+                          "example": "e80ece7e-fb2a-4c0b-de94-08d8a29a107b"
+                        }
+                      }
+                    },
+                    "termsAndConditions": {
+                      
+                    },
+                    "responseMessage": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "detailedResponseMessage": {
+                      "type": "string",
+                      "example": "The operation was successful"
+                    },
+                    "language": {
+                      "type": "string",
+                      "example": "EN"
+                    },
+                    "responseCode": {
+                      "type": "string",
+                      "example": "000"
+                    },
+                    "detailedResponseCode": {
+                      "type": "string",
+                      "example": "000"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/direct/eInvoice/{paymentIntentId}": {
+      "get": {
+        "summary": "Fetch Payment Link Details",
+        "description": "",
+        "operationId": "get-payment-intent-by-id",
+        "parameters": [
+          {
+            "name": "paymentIntentId",
+            "in": "path",
+            "description": "ID of Payment Intent",
+            "schema": {
+              "type": "string",
+              "default": "82249793-ef36-4478-0776-08daf7ec2bc4"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"paymentIntent\": {\n        \"link\": \"https://merchant.geidea.net/payByLink/62s-g9t-o8i-9cp\",\n        \"customer\": {\n            \"customerId\": \"ed46791d-22da-41f4-7a1c-08daf7e7b5df\",\n            \"email\": \"test@gmail.com\",\n            \"phoneNumber\": \"511111111\",\n            \"phoneCountryCode\": \"+966\",\n            \"name\": \"John\",\n            \"updatedBy\": \"PGW\",\n            \"updatedDate\": \"2023-01-23T21:51:29.2698764Z\",\n            \"addresses\": []\n        },\n        \"eInvoiceDetails\": {\n            \"type\": \"Detailed\",\n            \"collectCustomersBillingShippingAddress\": true,\n            \"preAuthorizeAmount\": true,\n            \"subtotalWithoutTax\": 100.00,\n            \"subtotalTax\": 0.00,\n            \"subtotal\": 100.00,\n            \"grandTotal\": 100.00,\n            \"extraCharges\": 0.00,\n            \"extraChargesType\": \"Amount\",\n            \"chargeDescription\": \"string\",\n            \"merchantReferenceId\": \"string\",\n            \"invoiceDiscount\": 0.00,\n            \"invoiceDiscountType\": \"Amount\",\n            \"language\": \"EN\",\n            \"eInvoiceItems\": [\n                {\n                    \"eInvoiceItemId\": \"eeeead6c-db54-4906-34eb-08daf7f29d81\",\n                    \"description\": \"string\",\n                    \"price\": 10.00,\n                    \"priceWithDiscount\": 10.00,\n                    \"priceTax\": 0.00,\n                    \"priceTotal\": 10.00,\n                    \"quantity\": 10,\n                    \"sku\": \"string\",\n                    \"itemDiscount\": 0.00,\n                    \"itemDiscountType\": \"Amount\",\n                    \"tax\": 0.00,\n                    \"taxType\": \"Amount\",\n                    \"totalWithoutTax\": 100.00,\n                    \"totalTax\": 0.00,\n                    \"total\": 100.00\n                }\n            ]\n        },\n        \"eInvoiceSentLinks\": [],\n        \"paymentIntentId\": \"82249793-ef36-4478-0776-08daf7ec2bc4\",\n        \"number\": \"901996084874\",\n        \"urlSlug\": \"62s-g9t-o8i-9cp\",\n        \"type\": \"EInvoice\",\n        \"amount\": 100.00,\n        \"currency\": \"SAR\",\n        \"merchantId\": \"e80ece7e-fb2a-4c0b-de94-08d8a29a107b\",\n        \"merchantPublicKey\": \"a087f4ca-9890-407b-9c2f-7630836cc020\",\n        \"expiryDate\": \"2023-02-10T08:54:33.617Z\",\n        \"activationDate\": \"2023-02-10T08:54:33.617Z\",\n        \"status\": \"SentToCustomer\",\n        \"customerId\": \"ed46791d-22da-41f4-7a1c-08daf7e7b5df\",\n        \"eInvoiceUploadId\": null,\n        \"staticPaylinkId\": null,\n        \"subscriptionId\": null,\n        \"subscriptionOccurrenceId\": null,\n        \"orders\": [],\n        \"isPending\": true,\n        \"createdDate\": \"2023-01-23T20:32:53.765755Z\",\n        \"createdBy\": \"e80ece7e-fb2a-4c0b-de94-08d8a29a107b\",\n        \"updatedDate\": \"2023-01-23T21:47:03.318728Z\",\n        \"updatedBy\": \"e80ece7e-fb2a-4c0b-de94-08d8a29a107b\"\n    },\n    \"termsAndConditions\": null,\n    \"responseMessage\": \"Success\",\n    \"detailedResponseMessage\": \"The operation was successful\",\n    \"language\": \"EN\",\n    \"responseCode\": \"000\",\n    \"detailedResponseCode\": \"000\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "paymentIntent": {
+                      "type": "object",
+                      "properties": {
+                        "link": {
+                          "type": "string",
+                          "example": "https://merchant.geidea.net/payByLink/62s-g9t-o8i-9cp"
+                        },
+                        "customer": {
+                          "type": "object",
+                          "properties": {
+                            "customerId": {
+                              "type": "string",
+                              "example": "ed46791d-22da-41f4-7a1c-08daf7e7b5df"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "test@gmail.com"
+                            },
+                            "phoneNumber": {
+                              "type": "string",
+                              "example": "511111111"
+                            },
+                            "phoneCountryCode": {
+                              "type": "string",
+                              "example": "+966"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "John"
+                            },
+                            "updatedBy": {
+                              "type": "string",
+                              "example": "PGW"
+                            },
+                            "updatedDate": {
+                              "type": "string",
+                              "example": "2023-01-23T21:51:29.2698764Z"
+                            },
+                            "addresses": {
+                              "type": "array"
+                            }
+                          }
+                        },
+                        "eInvoiceDetails": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "example": "Detailed"
+                            },
+                            "collectCustomersBillingShippingAddress": {
+                              "type": "boolean",
+                              "example": true,
+                              "default": true
+                            },
+                            "preAuthorizeAmount": {
+                              "type": "boolean",
+                              "example": true,
+                              "default": true
+                            },
+                            "subtotalWithoutTax": {
+                              "type": "integer",
+                              "example": 100,
+                              "default": 0
+                            },
+                            "subtotalTax": {
+                              "type": "integer",
+                              "example": 0,
+                              "default": 0
+                            },
+                            "subtotal": {
+                              "type": "integer",
+                              "example": 100,
+                              "default": 0
+                            },
+                            "grandTotal": {
+                              "type": "integer",
+                              "example": 100,
+                              "default": 0
+                            },
+                            "extraCharges": {
+                              "type": "integer",
+                              "example": 0,
+                              "default": 0
+                            },
+                            "extraChargesType": {
+                              "type": "string",
+                              "example": "Amount"
+                            },
+                            "chargeDescription": {
+                              "type": "string",
+                              "example": "string"
+                            },
+                            "merchantReferenceId": {
+                              "type": "string",
+                              "example": "string"
+                            },
+                            "invoiceDiscount": {
+                              "type": "integer",
+                              "example": 0,
+                              "default": 0
+                            },
+                            "invoiceDiscountType": {
+                              "type": "string",
+                              "example": "Amount"
+                            },
+                            "language": {
+                              "type": "string",
+                              "example": "EN"
+                            },
+                            "eInvoiceItems": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "eInvoiceItemId": {
+                                    "type": "string",
+                                    "example": "eeeead6c-db54-4906-34eb-08daf7f29d81"
+                                  },
+                                  "description": {
+                                    "type": "string",
+                                    "example": "string"
+                                  },
+                                  "price": {
+                                    "type": "integer",
+                                    "example": 10,
+                                    "default": 0
+                                  },
+                                  "priceWithDiscount": {
+                                    "type": "integer",
+                                    "example": 10,
+                                    "default": 0
+                                  },
+                                  "priceTax": {
+                                    "type": "integer",
+                                    "example": 0,
+                                    "default": 0
+                                  },
+                                  "priceTotal": {
+                                    "type": "integer",
+                                    "example": 10,
+                                    "default": 0
+                                  },
+                                  "quantity": {
+                                    "type": "integer",
+                                    "example": 10,
+                                    "default": 0
+                                  },
+                                  "sku": {
+                                    "type": "string",
+                                    "example": "string"
+                                  },
+                                  "itemDiscount": {
+                                    "type": "integer",
+                                    "example": 0,
+                                    "default": 0
+                                  },
+                                  "itemDiscountType": {
+                                    "type": "string",
+                                    "example": "Amount"
+                                  },
+                                  "tax": {
+                                    "type": "integer",
+                                    "example": 0,
+                                    "default": 0
+                                  },
+                                  "taxType": {
+                                    "type": "string",
+                                    "example": "Amount"
+                                  },
+                                  "totalWithoutTax": {
+                                    "type": "integer",
+                                    "example": 100,
+                                    "default": 0
+                                  },
+                                  "totalTax": {
+                                    "type": "integer",
+                                    "example": 0,
+                                    "default": 0
+                                  },
+                                  "total": {
+                                    "type": "integer",
+                                    "example": 100,
+                                    "default": 0
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "eInvoiceSentLinks": {
+                          "type": "array"
+                        },
+                        "paymentIntentId": {
+                          "type": "string",
+                          "example": "82249793-ef36-4478-0776-08daf7ec2bc4"
+                        },
+                        "number": {
+                          "type": "string",
+                          "example": "901996084874"
+                        },
+                        "urlSlug": {
+                          "type": "string",
+                          "example": "62s-g9t-o8i-9cp"
+                        },
+                        "type": {
+                          "type": "string",
+                          "example": "EInvoice"
+                        },
+                        "amount": {
+                          "type": "integer",
+                          "example": 100,
+                          "default": 0
+                        },
+                        "currency": {
+                          "type": "string",
+                          "example": "SAR"
+                        },
+                        "merchantId": {
+                          "type": "string",
+                          "example": "e80ece7e-fb2a-4c0b-de94-08d8a29a107b"
+                        },
+                        "merchantPublicKey": {
+                          "type": "string",
+                          "example": "a087f4ca-9890-407b-9c2f-7630836cc020"
+                        },
+                        "expiryDate": {
+                          "type": "string",
+                          "example": "2023-02-10T08:54:33.617Z"
+                        },
+                        "activationDate": {
+                          "type": "string",
+                          "example": "2023-02-10T08:54:33.617Z"
+                        },
+                        "status": {
+                          "type": "string",
+                          "example": "SentToCustomer"
+                        },
+                        "customerId": {
+                          "type": "string",
+                          "example": "ed46791d-22da-41f4-7a1c-08daf7e7b5df"
+                        },
+                        "eInvoiceUploadId": {
+                          
+                        },
+                        "staticPaylinkId": {
+                          
+                        },
+                        "subscriptionId": {
+                          
+                        },
+                        "subscriptionOccurrenceId": {
+                          
+                        },
+                        "orders": {
+                          "type": "array"
+                        },
+                        "isPending": {
+                          "type": "boolean",
+                          "example": true,
+                          "default": true
+                        },
+                        "createdDate": {
+                          "type": "string",
+                          "example": "2023-01-23T20:32:53.765755Z"
+                        },
+                        "createdBy": {
+                          "type": "string",
+                          "example": "e80ece7e-fb2a-4c0b-de94-08d8a29a107b"
+                        },
+                        "updatedDate": {
+                          "type": "string",
+                          "example": "2023-01-23T21:47:03.318728Z"
+                        },
+                        "updatedBy": {
+                          "type": "string",
+                          "example": "e80ece7e-fb2a-4c0b-de94-08d8a29a107b"
+                        }
+                      }
+                    },
+                    "termsAndConditions": {
+                      
+                    },
+                    "responseMessage": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "detailedResponseMessage": {
+                      "type": "string",
+                      "example": "The operation was successful"
+                    },
+                    "language": {
+                      "type": "string",
+                      "example": "EN"
+                    },
+                    "responseCode": {
+                      "type": "string",
+                      "example": "000"
+                    },
+                    "detailedResponseCode": {
+                      "type": "string",
+                      "example": "000"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "delete": {
+        "summary": "Delete Payment Intent",
+        "description": "",
+        "operationId": "delete-payment-intent",
+        "parameters": [
+          {
+            "name": "paymentIntentId",
+            "in": "path",
+            "description": "ID of Payment Intent",
+            "schema": {
+              "type": "string",
+              "default": "82249793-ef36-4478-0776-08daf7ec2bc4"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"responseMessage\": \"Success\",\n    \"detailedResponseMessage\": \"The operation was successful\",\n    \"language\": \"EN\",\n    \"responseCode\": \"000\",\n    \"detailedResponseCode\": \"000\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "responseMessage": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "detailedResponseMessage": {
+                      "type": "string",
+                      "example": "The operation was successful"
+                    },
+                    "language": {
+                      "type": "string",
+                      "example": "EN"
+                    },
+                    "responseCode": {
+                      "type": "string",
+                      "example": "000"
+                    },
+                    "detailedResponseCode": {
+                      "type": "string",
+                      "example": "000"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/direct/eInvoice/{paymentIntentId}/SendByEmail": {
+      "post": {
+        "summary": "Send Payment link by Email",
+        "description": "",
+        "operationId": "send-by-email",
+        "parameters": [
+          {
+            "name": "paymentIntentId",
+            "in": "path",
+            "description": "ID of Payment Intent",
+            "schema": {
+              "type": "string",
+              "default": "82249793-ef36-4478-0776-08daf7ec2bc4"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"paymentIntent\": {\n        \"link\": \"https://merchant.geidea.net/payByLink/62s-g9t-o8i-9cp\",\n        \"customer\": {\n            \"customerId\": \"ed46791d-22da-41f4-7a1c-08daf7e7b5df\",\n            \"email\": \"test@gmail.com\",\n            \"phoneNumber\": \"511111111\",\n            \"phoneCountryCode\": \"+966\",\n            \"name\": \"John\",\n            \"updatedBy\": \"PGW\",\n            \"updatedDate\": \"2023-01-23T21:51:29.2698764Z\",\n            \"addresses\": []\n        },\n        \"eInvoiceDetails\": {\n            \"type\": \"Detailed\",\n            \"collectCustomersBillingShippingAddress\": true,\n            \"preAuthorizeAmount\": true,\n            \"subtotalWithoutTax\": 100.00,\n            \"subtotalTax\": 0.00,\n            \"subtotal\": 100.00,\n            \"grandTotal\": 100.00,\n            \"extraCharges\": 0.00,\n            \"extraChargesType\": \"Amount\",\n            \"chargeDescription\": \"string\",\n            \"merchantReferenceId\": \"string\",\n            \"invoiceDiscount\": 0.00,\n            \"invoiceDiscountType\": \"Amount\",\n            \"language\": \"EN\",\n            \"eInvoiceItems\": [\n                {\n                    \"eInvoiceItemId\": \"eeeead6c-db54-4906-34eb-08daf7f29d81\",\n                    \"description\": \"string\",\n                    \"price\": 10.00,\n                    \"priceWithDiscount\": 10.00,\n                    \"priceTax\": 0.00,\n                    \"priceTotal\": 10.00,\n                    \"quantity\": 10,\n                    \"sku\": \"string\",\n                    \"itemDiscount\": 0.00,\n                    \"itemDiscountType\": \"Amount\",\n                    \"tax\": 0.00,\n                    \"taxType\": \"Amount\",\n                    \"totalWithoutTax\": 100.00,\n                    \"totalTax\": 0.00,\n                    \"total\": 100.00\n                }\n            ]\n        },\n        \"eInvoiceSentLinks\": [],\n        \"paymentIntentId\": \"82249793-ef36-4478-0776-08daf7ec2bc4\",\n        \"number\": \"901996084874\",\n        \"urlSlug\": \"62s-g9t-o8i-9cp\",\n        \"type\": \"EInvoice\",\n        \"amount\": 100.00,\n        \"currency\": \"SAR\",\n        \"merchantId\": \"e80ece7e-fb2a-4c0b-de94-08d8a29a107b\",\n        \"merchantPublicKey\": \"a087f4ca-9890-407b-9c2f-7630836cc020\",\n        \"expiryDate\": \"2023-02-10T08:54:33.617Z\",\n        \"activationDate\": \"2023-02-10T08:54:33.617Z\",\n        \"status\": \"SentToCustomer\",\n        \"customerId\": \"ed46791d-22da-41f4-7a1c-08daf7e7b5df\",\n        \"eInvoiceUploadId\": null,\n        \"staticPaylinkId\": null,\n        \"subscriptionId\": null,\n        \"subscriptionOccurrenceId\": null,\n        \"orders\": [],\n        \"isPending\": true,\n        \"createdDate\": \"2023-01-23T20:32:53.765755Z\",\n        \"createdBy\": \"e80ece7e-fb2a-4c0b-de94-08d8a29a107b\",\n        \"updatedDate\": \"2023-01-23T21:47:03.318728Z\",\n        \"updatedBy\": \"e80ece7e-fb2a-4c0b-de94-08d8a29a107b\"\n    },\n    \"termsAndConditions\": null,\n    \"responseMessage\": \"Success\",\n    \"detailedResponseMessage\": \"The operation was successful\",\n    \"language\": \"EN\",\n    \"responseCode\": \"000\",\n    \"detailedResponseCode\": \"000\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "paymentIntent": {
+                      "type": "object",
+                      "properties": {
+                        "link": {
+                          "type": "string",
+                          "example": "https://merchant.geidea.net/payByLink/62s-g9t-o8i-9cp"
+                        },
+                        "customer": {
+                          "type": "object",
+                          "properties": {
+                            "customerId": {
+                              "type": "string",
+                              "example": "ed46791d-22da-41f4-7a1c-08daf7e7b5df"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "test@gmail.com"
+                            },
+                            "phoneNumber": {
+                              "type": "string",
+                              "example": "511111111"
+                            },
+                            "phoneCountryCode": {
+                              "type": "string",
+                              "example": "+966"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "John"
+                            },
+                            "updatedBy": {
+                              "type": "string",
+                              "example": "PGW"
+                            },
+                            "updatedDate": {
+                              "type": "string",
+                              "example": "2023-01-23T21:51:29.2698764Z"
+                            },
+                            "addresses": {
+                              "type": "array"
+                            }
+                          }
+                        },
+                        "eInvoiceDetails": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "example": "Detailed"
+                            },
+                            "collectCustomersBillingShippingAddress": {
+                              "type": "boolean",
+                              "example": true,
+                              "default": true
+                            },
+                            "preAuthorizeAmount": {
+                              "type": "boolean",
+                              "example": true,
+                              "default": true
+                            },
+                            "subtotalWithoutTax": {
+                              "type": "integer",
+                              "example": 100,
+                              "default": 0
+                            },
+                            "subtotalTax": {
+                              "type": "integer",
+                              "example": 0,
+                              "default": 0
+                            },
+                            "subtotal": {
+                              "type": "integer",
+                              "example": 100,
+                              "default": 0
+                            },
+                            "grandTotal": {
+                              "type": "integer",
+                              "example": 100,
+                              "default": 0
+                            },
+                            "extraCharges": {
+                              "type": "integer",
+                              "example": 0,
+                              "default": 0
+                            },
+                            "extraChargesType": {
+                              "type": "string",
+                              "example": "Amount"
+                            },
+                            "chargeDescription": {
+                              "type": "string",
+                              "example": "string"
+                            },
+                            "merchantReferenceId": {
+                              "type": "string",
+                              "example": "string"
+                            },
+                            "invoiceDiscount": {
+                              "type": "integer",
+                              "example": 0,
+                              "default": 0
+                            },
+                            "invoiceDiscountType": {
+                              "type": "string",
+                              "example": "Amount"
+                            },
+                            "language": {
+                              "type": "string",
+                              "example": "EN"
+                            },
+                            "eInvoiceItems": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "eInvoiceItemId": {
+                                    "type": "string",
+                                    "example": "eeeead6c-db54-4906-34eb-08daf7f29d81"
+                                  },
+                                  "description": {
+                                    "type": "string",
+                                    "example": "string"
+                                  },
+                                  "price": {
+                                    "type": "integer",
+                                    "example": 10,
+                                    "default": 0
+                                  },
+                                  "priceWithDiscount": {
+                                    "type": "integer",
+                                    "example": 10,
+                                    "default": 0
+                                  },
+                                  "priceTax": {
+                                    "type": "integer",
+                                    "example": 0,
+                                    "default": 0
+                                  },
+                                  "priceTotal": {
+                                    "type": "integer",
+                                    "example": 10,
+                                    "default": 0
+                                  },
+                                  "quantity": {
+                                    "type": "integer",
+                                    "example": 10,
+                                    "default": 0
+                                  },
+                                  "sku": {
+                                    "type": "string",
+                                    "example": "string"
+                                  },
+                                  "itemDiscount": {
+                                    "type": "integer",
+                                    "example": 0,
+                                    "default": 0
+                                  },
+                                  "itemDiscountType": {
+                                    "type": "string",
+                                    "example": "Amount"
+                                  },
+                                  "tax": {
+                                    "type": "integer",
+                                    "example": 0,
+                                    "default": 0
+                                  },
+                                  "taxType": {
+                                    "type": "string",
+                                    "example": "Amount"
+                                  },
+                                  "totalWithoutTax": {
+                                    "type": "integer",
+                                    "example": 100,
+                                    "default": 0
+                                  },
+                                  "totalTax": {
+                                    "type": "integer",
+                                    "example": 0,
+                                    "default": 0
+                                  },
+                                  "total": {
+                                    "type": "integer",
+                                    "example": 100,
+                                    "default": 0
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "eInvoiceSentLinks": {
+                          "type": "array"
+                        },
+                        "paymentIntentId": {
+                          "type": "string",
+                          "example": "82249793-ef36-4478-0776-08daf7ec2bc4"
+                        },
+                        "number": {
+                          "type": "string",
+                          "example": "901996084874"
+                        },
+                        "urlSlug": {
+                          "type": "string",
+                          "example": "62s-g9t-o8i-9cp"
+                        },
+                        "type": {
+                          "type": "string",
+                          "example": "EInvoice"
+                        },
+                        "amount": {
+                          "type": "integer",
+                          "example": 100,
+                          "default": 0
+                        },
+                        "currency": {
+                          "type": "string",
+                          "example": "SAR"
+                        },
+                        "merchantId": {
+                          "type": "string",
+                          "example": "e80ece7e-fb2a-4c0b-de94-08d8a29a107b"
+                        },
+                        "merchantPublicKey": {
+                          "type": "string",
+                          "example": "a087f4ca-9890-407b-9c2f-7630836cc020"
+                        },
+                        "expiryDate": {
+                          "type": "string",
+                          "example": "2023-02-10T08:54:33.617Z"
+                        },
+                        "activationDate": {
+                          "type": "string",
+                          "example": "2023-02-10T08:54:33.617Z"
+                        },
+                        "status": {
+                          "type": "string",
+                          "example": "SentToCustomer"
+                        },
+                        "customerId": {
+                          "type": "string",
+                          "example": "ed46791d-22da-41f4-7a1c-08daf7e7b5df"
+                        },
+                        "eInvoiceUploadId": {
+                          
+                        },
+                        "staticPaylinkId": {
+                          
+                        },
+                        "subscriptionId": {
+                          
+                        },
+                        "subscriptionOccurrenceId": {
+                          
+                        },
+                        "orders": {
+                          "type": "array"
+                        },
+                        "isPending": {
+                          "type": "boolean",
+                          "example": true,
+                          "default": true
+                        },
+                        "createdDate": {
+                          "type": "string",
+                          "example": "2023-01-23T20:32:53.765755Z"
+                        },
+                        "createdBy": {
+                          "type": "string",
+                          "example": "e80ece7e-fb2a-4c0b-de94-08d8a29a107b"
+                        },
+                        "updatedDate": {
+                          "type": "string",
+                          "example": "2023-01-23T21:47:03.318728Z"
+                        },
+                        "updatedBy": {
+                          "type": "string",
+                          "example": "e80ece7e-fb2a-4c0b-de94-08d8a29a107b"
+                        }
+                      }
+                    },
+                    "termsAndConditions": {
+                      
+                    },
+                    "responseMessage": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "detailedResponseMessage": {
+                      "type": "string",
+                      "example": "The operation was successful"
+                    },
+                    "language": {
+                      "type": "string",
+                      "example": "EN"
+                    },
+                    "responseCode": {
+                      "type": "string",
+                      "example": "000"
+                    },
+                    "detailedResponseCode": {
+                      "type": "string",
+                      "example": "000"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/direct/eInvoice/{paymentIntentId}/sendBySms": {
+      "post": {
+        "summary": "Send Payment Link by SMS",
+        "description": "",
+        "operationId": "send-payment-link-by-sms",
+        "parameters": [
+          {
+            "name": "paymentIntentId",
+            "in": "path",
+            "description": "ID of Payment Intent",
+            "schema": {
+              "type": "string",
+              "default": "82249793-ef36-4478-0776-08daf7ec2bc4"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"paymentIntent\": {\n        \"link\": \"https://merchant.geidea.net/payByLink/62s-g9t-o8i-9cp\",\n        \"customer\": {\n            \"customerId\": \"ed46791d-22da-41f4-7a1c-08daf7e7b5df\",\n            \"email\": \"test@gmail.com\",\n            \"phoneNumber\": \"511111111\",\n            \"phoneCountryCode\": \"+966\",\n            \"name\": \"John\",\n            \"updatedBy\": \"PGW\",\n            \"updatedDate\": \"2023-01-23T21:51:29.2698764Z\",\n            \"addresses\": []\n        },\n        \"eInvoiceDetails\": {\n            \"type\": \"Detailed\",\n            \"collectCustomersBillingShippingAddress\": true,\n            \"preAuthorizeAmount\": true,\n            \"subtotalWithoutTax\": 100.00,\n            \"subtotalTax\": 0.00,\n            \"subtotal\": 100.00,\n            \"grandTotal\": 100.00,\n            \"extraCharges\": 0.00,\n            \"extraChargesType\": \"Amount\",\n            \"chargeDescription\": \"string\",\n            \"merchantReferenceId\": \"string\",\n            \"invoiceDiscount\": 0.00,\n            \"invoiceDiscountType\": \"Amount\",\n            \"language\": \"EN\",\n            \"eInvoiceItems\": [\n                {\n                    \"eInvoiceItemId\": \"eeeead6c-db54-4906-34eb-08daf7f29d81\",\n                    \"description\": \"string\",\n                    \"price\": 10.00,\n                    \"priceWithDiscount\": 10.00,\n                    \"priceTax\": 0.00,\n                    \"priceTotal\": 10.00,\n                    \"quantity\": 10,\n                    \"sku\": \"string\",\n                    \"itemDiscount\": 0.00,\n                    \"itemDiscountType\": \"Amount\",\n                    \"tax\": 0.00,\n                    \"taxType\": \"Amount\",\n                    \"totalWithoutTax\": 100.00,\n                    \"totalTax\": 0.00,\n                    \"total\": 100.00\n                }\n            ]\n        },\n        \"eInvoiceSentLinks\": [],\n        \"paymentIntentId\": \"82249793-ef36-4478-0776-08daf7ec2bc4\",\n        \"number\": \"901996084874\",\n        \"urlSlug\": \"62s-g9t-o8i-9cp\",\n        \"type\": \"EInvoice\",\n        \"amount\": 100.00,\n        \"currency\": \"SAR\",\n        \"merchantId\": \"e80ece7e-fb2a-4c0b-de94-08d8a29a107b\",\n        \"merchantPublicKey\": \"a087f4ca-9890-407b-9c2f-7630836cc020\",\n        \"expiryDate\": \"2023-02-10T08:54:33.617Z\",\n        \"activationDate\": \"2023-02-10T08:54:33.617Z\",\n        \"status\": \"SentToCustomer\",\n        \"customerId\": \"ed46791d-22da-41f4-7a1c-08daf7e7b5df\",\n        \"eInvoiceUploadId\": null,\n        \"staticPaylinkId\": null,\n        \"subscriptionId\": null,\n        \"subscriptionOccurrenceId\": null,\n        \"orders\": [],\n        \"isPending\": true,\n        \"createdDate\": \"2023-01-23T20:32:53.765755Z\",\n        \"createdBy\": \"e80ece7e-fb2a-4c0b-de94-08d8a29a107b\",\n        \"updatedDate\": \"2023-01-23T21:47:03.318728Z\",\n        \"updatedBy\": \"e80ece7e-fb2a-4c0b-de94-08d8a29a107b\"\n    },\n    \"termsAndConditions\": null,\n    \"responseMessage\": \"Success\",\n    \"detailedResponseMessage\": \"The operation was successful\",\n    \"language\": \"EN\",\n    \"responseCode\": \"000\",\n    \"detailedResponseCode\": \"000\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "paymentIntent": {
+                      "type": "object",
+                      "properties": {
+                        "link": {
+                          "type": "string",
+                          "example": "https://merchant.geidea.net/payByLink/62s-g9t-o8i-9cp"
+                        },
+                        "customer": {
+                          "type": "object",
+                          "properties": {
+                            "customerId": {
+                              "type": "string",
+                              "example": "ed46791d-22da-41f4-7a1c-08daf7e7b5df"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "test@gmail.com"
+                            },
+                            "phoneNumber": {
+                              "type": "string",
+                              "example": "511111111"
+                            },
+                            "phoneCountryCode": {
+                              "type": "string",
+                              "example": "+966"
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "John"
+                            },
+                            "updatedBy": {
+                              "type": "string",
+                              "example": "PGW"
+                            },
+                            "updatedDate": {
+                              "type": "string",
+                              "example": "2023-01-23T21:51:29.2698764Z"
+                            },
+                            "addresses": {
+                              "type": "array"
+                            }
+                          }
+                        },
+                        "eInvoiceDetails": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "example": "Detailed"
+                            },
+                            "collectCustomersBillingShippingAddress": {
+                              "type": "boolean",
+                              "example": true,
+                              "default": true
+                            },
+                            "preAuthorizeAmount": {
+                              "type": "boolean",
+                              "example": true,
+                              "default": true
+                            },
+                            "subtotalWithoutTax": {
+                              "type": "integer",
+                              "example": 100,
+                              "default": 0
+                            },
+                            "subtotalTax": {
+                              "type": "integer",
+                              "example": 0,
+                              "default": 0
+                            },
+                            "subtotal": {
+                              "type": "integer",
+                              "example": 100,
+                              "default": 0
+                            },
+                            "grandTotal": {
+                              "type": "integer",
+                              "example": 100,
+                              "default": 0
+                            },
+                            "extraCharges": {
+                              "type": "integer",
+                              "example": 0,
+                              "default": 0
+                            },
+                            "extraChargesType": {
+                              "type": "string",
+                              "example": "Amount"
+                            },
+                            "chargeDescription": {
+                              "type": "string",
+                              "example": "string"
+                            },
+                            "merchantReferenceId": {
+                              "type": "string",
+                              "example": "string"
+                            },
+                            "invoiceDiscount": {
+                              "type": "integer",
+                              "example": 0,
+                              "default": 0
+                            },
+                            "invoiceDiscountType": {
+                              "type": "string",
+                              "example": "Amount"
+                            },
+                            "language": {
+                              "type": "string",
+                              "example": "EN"
+                            },
+                            "eInvoiceItems": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "eInvoiceItemId": {
+                                    "type": "string",
+                                    "example": "eeeead6c-db54-4906-34eb-08daf7f29d81"
+                                  },
+                                  "description": {
+                                    "type": "string",
+                                    "example": "string"
+                                  },
+                                  "price": {
+                                    "type": "integer",
+                                    "example": 10,
+                                    "default": 0
+                                  },
+                                  "priceWithDiscount": {
+                                    "type": "integer",
+                                    "example": 10,
+                                    "default": 0
+                                  },
+                                  "priceTax": {
+                                    "type": "integer",
+                                    "example": 0,
+                                    "default": 0
+                                  },
+                                  "priceTotal": {
+                                    "type": "integer",
+                                    "example": 10,
+                                    "default": 0
+                                  },
+                                  "quantity": {
+                                    "type": "integer",
+                                    "example": 10,
+                                    "default": 0
+                                  },
+                                  "sku": {
+                                    "type": "string",
+                                    "example": "string"
+                                  },
+                                  "itemDiscount": {
+                                    "type": "integer",
+                                    "example": 0,
+                                    "default": 0
+                                  },
+                                  "itemDiscountType": {
+                                    "type": "string",
+                                    "example": "Amount"
+                                  },
+                                  "tax": {
+                                    "type": "integer",
+                                    "example": 0,
+                                    "default": 0
+                                  },
+                                  "taxType": {
+                                    "type": "string",
+                                    "example": "Amount"
+                                  },
+                                  "totalWithoutTax": {
+                                    "type": "integer",
+                                    "example": 100,
+                                    "default": 0
+                                  },
+                                  "totalTax": {
+                                    "type": "integer",
+                                    "example": 0,
+                                    "default": 0
+                                  },
+                                  "total": {
+                                    "type": "integer",
+                                    "example": 100,
+                                    "default": 0
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "eInvoiceSentLinks": {
+                          "type": "array"
+                        },
+                        "paymentIntentId": {
+                          "type": "string",
+                          "example": "82249793-ef36-4478-0776-08daf7ec2bc4"
+                        },
+                        "number": {
+                          "type": "string",
+                          "example": "901996084874"
+                        },
+                        "urlSlug": {
+                          "type": "string",
+                          "example": "62s-g9t-o8i-9cp"
+                        },
+                        "type": {
+                          "type": "string",
+                          "example": "EInvoice"
+                        },
+                        "amount": {
+                          "type": "integer",
+                          "example": 100,
+                          "default": 0
+                        },
+                        "currency": {
+                          "type": "string",
+                          "example": "SAR"
+                        },
+                        "merchantId": {
+                          "type": "string",
+                          "example": "e80ece7e-fb2a-4c0b-de94-08d8a29a107b"
+                        },
+                        "merchantPublicKey": {
+                          "type": "string",
+                          "example": "a087f4ca-9890-407b-9c2f-7630836cc020"
+                        },
+                        "expiryDate": {
+                          "type": "string",
+                          "example": "2023-02-10T08:54:33.617Z"
+                        },
+                        "activationDate": {
+                          "type": "string",
+                          "example": "2023-02-10T08:54:33.617Z"
+                        },
+                        "status": {
+                          "type": "string",
+                          "example": "SentToCustomer"
+                        },
+                        "customerId": {
+                          "type": "string",
+                          "example": "ed46791d-22da-41f4-7a1c-08daf7e7b5df"
+                        },
+                        "eInvoiceUploadId": {
+                          
+                        },
+                        "staticPaylinkId": {
+                          
+                        },
+                        "subscriptionId": {
+                          
+                        },
+                        "subscriptionOccurrenceId": {
+                          
+                        },
+                        "orders": {
+                          "type": "array"
+                        },
+                        "isPending": {
+                          "type": "boolean",
+                          "example": true,
+                          "default": true
+                        },
+                        "createdDate": {
+                          "type": "string",
+                          "example": "2023-01-23T20:32:53.765755Z"
+                        },
+                        "createdBy": {
+                          "type": "string",
+                          "example": "e80ece7e-fb2a-4c0b-de94-08d8a29a107b"
+                        },
+                        "updatedDate": {
+                          "type": "string",
+                          "example": "2023-01-23T21:47:03.318728Z"
+                        },
+                        "updatedBy": {
+                          "type": "string",
+                          "example": "e80ece7e-fb2a-4c0b-de94-08d8a29a107b"
+                        }
+                      }
+                    },
+                    "termsAndConditions": {
+                      
+                    },
+                    "responseMessage": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "detailedResponseMessage": {
+                      "type": "string",
+                      "example": "The operation was successful"
+                    },
+                    "language": {
+                      "type": "string",
+                      "example": "EN"
+                    },
+                    "responseCode": {
+                      "type": "string",
+                      "example": "000"
+                    },
+                    "detailedResponseCode": {
+                      "type": "string",
+                      "example": "000"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/api/v1/direct/eInvoice/quick": {
+      "post": {
+        "summary": "Create Quick Payment Link",
+        "description": "",
+        "operationId": "create-quick-payment-link",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "amount",
+                  "currency",
+                  "customer"
+                ],
+                "properties": {
+                  "amount": {
+                    "type": "number",
+                    "description": "Amount for which payment link is created. Amount must be greater than 0.01. Must be equal to [eInvoiceItems.price * eInvoiceItems.quantity]",
+                    "default": 100,
+                    "format": "double"
+                  },
+                  "currency": {
+                    "type": "string",
+                    "description": "Currency for which payment link is created. Currency must be 3 characters in length. Acceptable currencies are: SAR, AED",
+                    "default": "SAR",
+                    "enum": [
+                      "SAR",
+                      "EGP",
+                      "AED",
+                      "QAR",
+                      "OMR",
+                      "BHD",
+                      "KWD",
+                      "USD",
+                      "GBP",
+                      "EUR"
+                    ]
+                  },
+                  "callbackurl": {
+                    "type": "string",
+                    "description": "endpoint where the details including status of the transaction will be shared"
+                  },
+                  "merchantReferenceId": {
+                    "type": "string"
+                  },
+                  "activationDate": {
+                    "type": "string",
+                    "description": "Activation date of payment link. If not set in request, it is set to null the value is returned in response.",
+                    "format": "date"
+                  },
+                  "expiryDate": {
+                    "type": "string",
+                    "description": "Expiry date of payment link. If not set in request, it is set to a date of 30 days after activation date automatically and the value is returned in response. If activationDate is not set, the date of 30 days after payment link creation date is set as expiry date and it is returned in response.",
+                    "format": "date"
+                  },
+                  "customer": {
+                    "type": "object",
+                    "description": "Customer Object",
+                    "required": [
+                      "name",
+                      "email",
+                      "phoneCountryCode",
+                      "phoneNumber"
+                    ],
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Customer Name",
+                        "default": "Kiran"
+                      },
+                      "email": {
+                        "type": "string",
+                        "description": "Email of customer. One of email or phoneNumber must be present.",
+                        "default": "testmail@geidea.com"
+                      },
+                      "phoneCountryCode": {
+                        "type": "string",
+                        "description": "Country code of customer's phone number eg: \"+971\". If phoneNumber is passed, phoneCountryCode must be passed.",
+                        "default": "+20"
+                      },
+                      "phoneNumber": {
+                        "type": "string",
+                        "description": "Customer's phone number  eg: \"511111111\". If phoneCountryCode is passed, phoneNumber must be passed.  One of email or phoneNumber must be present.",
+                        "default": "8003030083"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [
+      
+    ],
+    "explorer-enabled": true,
+    "proxy-enabled": true,
+    "samples-enabled": true
+  }
+}
