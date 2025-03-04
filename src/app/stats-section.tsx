@@ -3,7 +3,7 @@ import { H2, H3, P } from "~/components/ui/typography";
 import { api } from "~/trpc/server";
 import { BarChart3, Link as LinkIcon, Users, Code } from "lucide-react";
 
-export const revalidate = 60 * 60 * 4;
+export const revalidate = 60 * 60 * 10;
 
 async function StatsSection() {
   const stats = await api.stats.get();
